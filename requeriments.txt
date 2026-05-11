@@ -1,0 +1,21 @@
+# 📦 Requisitos para Accident Intelligence Agent
+# Instalación: pip install -r requirements.txt
+
+# ETL y manipulación de datos
+pandas>=1.5.0
+numpy>=1.23.0
+openpyxl>=3.0.0
+
+# Base de datos y configuración
+mysql-connector-python>=8.0.0
+sqlalchemy>=2.0.0
+python-dotenv>=1.0.0
+
+# Visualización y EDA
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Entorno interactivo
+jupyter>=1.0.0
+ipykernel>=6.0.0
