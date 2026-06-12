@@ -5,7 +5,7 @@
 
 ---
 
-## 📋 Resumen Ejecutivo
+## Resumen Ejecutivo
 Este proyecto analiza **28.773 accidentes de tráfico** registrados en Madrid durante 2020, combinando:
 1. 🔍 **Análisis Exploratorio (EDA):** Identificación de patrones temporales, geográficos y de severidad.
 2. 🤖 **Modelo Predictivo (ML):** Clasificación de accidentes como "Leves" o "Graves" con **71,84% de precisión**.
@@ -15,26 +15,26 @@ Este proyecto analiza **28.773 accidentes de tráfico** registrados en Madrid du
 
 ---
 
-## 🔍 Hallazgos Clave (EDA)
+## Hallazgos Clave (EDA)
 
-### 1. ⏰ Patrón Temporal Predecible
+### 1. Patrón Temporal Predecible
 - **Hora Pico:** 19:00h (2.132 accidentes) coincidiendo con salida laboral y ocio.
 - **Hora Mínima:** 04:00h (187 accidentes).
 - **Doble Pico Diario:** Mañana (08:00-10:00h) y Tarde (18:00-20:00h).
 
-### 2. 📊 Distribución de Gravedad
+### 2. Distribución de Gravedad
 - Entre datos válidos, la severidad se mantiene **estable (~50% Leve / ~50% Grave)** durante las 24h.
 - **Insight Sorprendente:** No se detecta aumento significativo de gravedad en horas nocturnas (desmintiendo mitos populares).
 - **Calidad del Dato:** ~50% de registros carecen de información de `lesividad` → oportunidad crítica de mejora en reporte policial.
 
-### 3. 🗺️ Factores de Riesgo Identificados
+### 3. Factores de Riesgo Identificados
 - **Edad:** Conductores <25 años y >55 años muestran mayor vulnerabilidad.
 - **Tipo de accidente:** Atropellos y salidas de vía correlacionan con mayor gravedad.
 - **Vehículo:** Motocicletas y peatones presentan mayor riesgo relativo.
 
 ---
 
-## 🤖 Modelo Predictivo de Gravedad (Machine Learning)
+## Modelo Predictivo de Gravedad (Machine Learning)
 
 ### Resultados Clave
 
@@ -61,7 +61,7 @@ Ejecuta el notebook `notebooks/02_modelo_predictivo_gravedad.ipynb`:
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 | Capa | Tecnologías |
 |------|-------------|
@@ -73,7 +73,7 @@ Ejecuta el notebook `notebooks/02_modelo_predictivo_gravedad.ipynb`:
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 accident-intelligent-agent/
@@ -100,7 +100,7 @@ accident-intelligent-agent/
 
 ---
 
-## 🚀 Cómo Reproducir el Proyecto
+## Cómo Reproducir el Proyecto
 
 ```bash
 # 1. Clonar repositorio
@@ -127,7 +127,7 @@ jupyter notebook notebooks/01_eda_exploratorio.ipynb
 
 ---
 
-## 💡 Impacto de Negocio
+## Impacto de Negocio
 
 ### Para Autoridades de Tráfico
 - 🚨 **Priorización de recursos:** El modelo detecta el 75% de accidentes graves, permitiendo activar protocolos de alta complejidad de forma proactiva.
@@ -144,7 +144,7 @@ jupyter notebook notebooks/01_eda_exploratorio.ipynb
 
 ---
 
-## 📈 Próximas Mejoras (Roadmap)
+## Próximas Mejoras (Roadmap)
 - [ ] Integración del modelo en dashboard Power BI (Python Visual)
 - [ ] Web App interactiva con Streamlit para pruebas en tiempo real
 - [ ] API REST para predicciones desde sistemas externos
