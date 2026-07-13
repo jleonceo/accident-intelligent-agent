@@ -1,113 +1,123 @@
-# 🚗 Accident Intelligence Agent
-**Análisis Predictivo de Accidentalidad Vial en Madrid (2020)**
+# Accident Intelligence Agent
+**Análisis predictivo de accidentalidad vial en Madrid (2020)**
 
-> Pipeline completo: ETL automatizado + Análisis Exploratorio + Modelo de Machine Learning para predecir gravedad de accidentes.
-
----
-
-## Resumen Ejecutivo
-Este proyecto analiza **28.773 accidentes de tráfico** registrados en Madrid durante 2020, combinando:
-1. 🔍 **Análisis Exploratorio (EDA):** Identificación de patrones temporales, geográficos y de severidad.
-2. 🤖 **Modelo Predictivo (ML):** Clasificación de accidentes como "Leves" o "Graves" con **71,84% de precisión**.
-3. ⚡ **Automatización:** ETL ejecutable (.exe) + notebook autocontenido para reproducibilidad total.
-
-**Objetivo:** Proporcionar insights accionables para autoridades de tráfico y servicios de emergencia, optimizando la prevención y respuesta ante siniestros viales.
+> Pipeline completo: ETL + análisis exploratorio + modelo de machine learning para predecir
+> la gravedad de un accidente.
 
 ---
 
-## Hallazgos Clave (EDA)
+## Resumen ejecutivo
+Este proyecto analiza **28.773 accidentes de tráfico** registrados en Madrid durante 2020, en tres partes:
+1. **Análisis exploratorio (EDA):** patrones temporales, geográficos y de severidad.
+2. **Modelo predictivo (ML):** clasifica cada accidente como "Leve" o "Grave" con un **accuracy del 72%**.
+3. **Reproducibilidad:** un ETL en Python (`scripts/export_data.py`) y notebooks autocontenidos.
 
-### 1. Patrón Temporal Predecible
-- **Hora Pico:** 19:00h (2.132 accidentes) coincidiendo con salida laboral y ocio.
-- **Hora Mínima:** 04:00h (187 accidentes).
-- **Doble Pico Diario:** Mañana (08:00-10:00h) y Tarde (18:00-20:00h).
-
-### 2. Distribución de Gravedad
-- Entre datos válidos, la severidad se mantiene **estable (~50% Leve / ~50% Grave)** durante las 24h.
-- **Insight Sorprendente:** No se detecta aumento significativo de gravedad en horas nocturnas (desmintiendo mitos populares).
-- **Calidad del Dato:** ~50% de registros carecen de información de `lesividad` → oportunidad crítica de mejora en reporte policial.
-
-### 3. Factores de Riesgo Identificados
-- **Edad:** Conductores <25 años y >55 años muestran mayor vulnerabilidad.
-- **Tipo de accidente:** Atropellos y salidas de vía correlacionan con mayor gravedad.
-- **Vehículo:** Motocicletas y peatones presentan mayor riesgo relativo.
+**Objetivo:** aportar información accionable para autoridades de tráfico y servicios de
+emergencia, de cara a la prevención y la respuesta ante siniestros.
 
 ---
 
-## Modelo Predictivo de Gravedad (Machine Learning)
+## Hallazgos clave (EDA)
 
-### Resultados Clave
+### 1. Patrón temporal predecible
+- **Hora pico:** 19:00h (2.132 accidentes), coincidiendo con la salida laboral y el ocio.
+- **Hora mínima:** 04:00h (187 accidentes).
+- **Doble pico diario:** mañana (08:00-10:00h) y tarde (18:00-20:00h).
+
+### 2. Distribución de gravedad
+- Entre los datos válidos, la severidad se mantiene **estable (~50% leve / ~50% grave)** durante las 24h.
+- No se detecta un aumento significativo de gravedad en horas nocturnas.
+- **Calidad del dato:** cerca del 50% de los registros no traen `lesividad`. Es una limitación
+  real del dato (reporte policial), y se dice abiertamente en vez de esconderla.
+
+### 3. Factores de riesgo
+- **Edad:** conductores menores de 25 y mayores de 55 muestran mayor vulnerabilidad.
+- **Tipo de accidente:** atropellos y salidas de vía correlacionan con mayor gravedad.
+- **Vehículo:** motocicletas y peatones presentan mayor riesgo relativo.
+
+---
+
+## Modelo predictivo de gravedad
+
+### Resultados
 
 | Métrica | Valor | Interpretación |
 |---------|-------|----------------|
-| **Accuracy Global** | 71,84% | Acierta 72 de cada 100 predicciones |
-| **Recall en Graves** | 75% | Detecta 3 de cada 4 accidentes graves reales |
-| **F1-Score** | 0,72 | Balance óptimo entre precisión y exhaustividad |
+| **Accuracy global** | 72% | Acierta 72 de cada 100 predicciones |
+| **Recall en graves** | 75% | Detecta 3 de cada 4 accidentes graves reales |
+| **F1-Score** | 0,72 | Balance razonable entre precisión y exhaustividad |
 
-### Variables Más Importantes
-1. 🎂 **Edad del implicado** (punto medio del rango)
-2. ⏰ **Hora del accidente**
-3. 🚗 **Tipo de accidente** (colisión, atropello, salida de vía)
-4. 📍 **Distrito** (ubicación geográfica)
-5. 🌦️ **Condiciones meteorológicas**
-6. 🛵 **Tipo de vehículo**
+Nota: con cerca del 50% de la lesividad ausente, estas cifras salen de los registros con dato
+válido; no son un veredicto sobre el total.
 
-### Cómo Probar el Modelo
+### Variables más importantes
+1. Edad del implicado (punto medio del rango).
+2. Hora del accidente.
+3. Tipo de accidente (colisión, atropello, salida de vía).
+4. Distrito (ubicación geográfica).
+5. Condiciones meteorológicas.
+6. Tipo de vehículo.
+
+### Cómo probar el modelo
 Ejecuta el notebook `notebooks/02_modelo_predictivo_gravedad.ipynb`:
-1. Celda 1: Instalación automática de dependencias
-2. Menú → Kernel → Restart
-3. Menú → Cell → Run All
-4. Resultados: Métricas, gráfico de importancia y modelo guardado en `models/gravedad_predictor.pkl`
+1. Celda 1: instalación automática de dependencias.
+2. Kernel → Restart.
+3. Cell → Run All.
+4. Resultados: métricas, gráfico de importancia y modelo serializado en `models/gravedad_predictor.pkl`.
 
 ---
 
-## Stack Tecnológico
+## Stack tecnológico
 
 | Capa | Tecnologías |
 |------|-------------|
-| **Base de Datos** | MySQL 8.0 |
-| **ETL / Ingeniería** | Python, Pandas, mysql-connector-python, PyInstaller |
+| **Base de datos** | MySQL 8.0 |
+| **ETL / ingeniería** | Python, Pandas, mysql-connector-python |
 | **Análisis / ML** | Scikit-learn, Random Forest, Joblib |
 | **Visualización** | Matplotlib, Seaborn, Power BI Desktop |
 | **Entorno** | Jupyter Notebook, Conda, Git |
 
 ---
 
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ```
 accident-intelligent-agent/
-├── README.md                  # 📖 Esta documentación
-├── requirements.txt           # 📦 Dependencias Python
-├── .env.example               # 🔑 Plantilla de credenciales
-├── .gitignore
+├── README.md
+├── requirements.txt
+├── .env.example                # Plantilla de credenciales
+├── EJECUTAR_ETL.bat            # Lanzador opcional (requiere compilar el ETL con PyInstaller)
 │
 ├── scripts/
-│   └── export_data.py         # ⚙️ ETL: MySQL → CSV
+│   ├── export_data.py          # ETL: MySQL → CSV
+│   └── load_data.py            # Carga del Excel a MySQL
 │
 ├── notebooks/
-│   ├── 01_eda_exploratorio.ipynb              # 🔍 Análisis visual y hallazgos
-│   └── 02_modelo_predictivo_gravedad.ipynb    # 🤖 ML: Entrenamiento y evaluación
+│   ├── 01_eda_exploratorio.ipynb              # Análisis visual y hallazgos
+│   └── 02_modelo_predictivo_gravedad.ipynb    # ML: entrenamiento y evaluación
 │
 ├── models/
-│   └── gravedad_predictor.pkl # 💾 Modelo entrenado listo para producción
+│   └── gravedad_predictor.pkl  # Modelo entrenado y serializado
+│
+├── accident_dashboard.pbix     # Cuadro de mando en Power BI (entregable)
 │
 └── data/
-    └── processed/             # 📊 CSVs limpios para Power BI
+    ├── raw/2020_Accidentalidad.xlsx
+    └── processed/              # CSVs limpios para Power BI
         ├── accidents.csv
         └── involved_parties.csv
 ```
 
 ---
 
-## Cómo Reproducir el Proyecto
+## Cómo reproducir el proyecto
 
 ```bash
-# 1. Clonar repositorio
+# 1. Clonar el repositorio
 git clone https://github.com/jleonceo/accident-intelligent-agent.git
 cd accident-intelligent-agent
 
-# 2. Crear entorno (recomendado)
+# 2. Crear el entorno (recomendado)
 conda create -n accident_agent python=3.10
 conda activate accident_agent
 
@@ -118,39 +128,38 @@ pip install -r requirements.txt
 cp .env.example .env
 # Editar .env con tus datos
 
-# 5. Ejecutar ETL
+# 5. Ejecutar el ETL
 python scripts/export_data.py
 
-# 6. Abrir análisis
+# 6. Abrir el análisis
 jupyter notebook notebooks/01_eda_exploratorio.ipynb
 ```
 
 ---
 
-## Impacto de Negocio
+## Impacto de negocio
 
-### Para Autoridades de Tráfico
-- 🚨 **Priorización de recursos:** El modelo detecta el 75% de accidentes graves, permitiendo activar protocolos de alta complejidad de forma proactiva.
-- 📊 **Prevención focalizada:** Campañas específicas en horas/distritos de mayor riesgo identificado.
-- 🗺️ **Planificación urbana:** Insights geoespaciales para rediseño de vías críticas.
+### Para autoridades de tráfico
+- **Priorización de recursos:** el modelo detecta el 75% de los accidentes graves.
+- **Prevención focalizada:** campañas en las horas y distritos de mayor riesgo.
+- **Planificación urbana:** información geoespacial para rediseñar vías críticas.
 
-### Para Servicios de Emergencia
-- ⚡ **Respuesta inteligente:** Integración del modelo en sistemas de despacho para pre-asignar recursos según gravedad predicha.
-- 📈 **Métricas de desempeño:** Evaluación continua de la precisión predictiva para mejora iterativa.
+### Para servicios de emergencia
+- **Respuesta informada:** integrar el modelo en el despacho para pre-asignar recursos según la gravedad predicha.
+- **Métricas de desempeño:** evaluación continua de la precisión predictiva.
 
-### Para Analistas de Datos
-- 🔧 **Pipeline reproducible:** Código limpio, comentado y autocontenido.
-- 🎓 **Caso de estudio completo:** Desde extracción de datos hasta modelo en producción.
-
----
-
-## Próximas Mejoras (Roadmap)
-- [ ] Integración del modelo en dashboard Power BI (Python Visual)
-- [ ] Web App interactiva con Streamlit para pruebas en tiempo real
-- [ ] API REST para predicciones desde sistemas externos
-- [ ] Modelo multiclase (incluyendo "Fallecimiento" como categoría)
-- [ ] Análisis de series temporales para predicción de picos de accidentalidad
+### Para analistas de datos
+- **Pipeline reproducible:** código comentado y autocontenido.
+- **Caso de estudio completo:** de la extracción de datos al modelo y el cuadro de mando.
 
 ---
 
-*Juan Luis León Rodríguez · [LinkedIn](https://linkedin.com/in/jlleonrodriguez/) · [GitHub](https://github.com/jleonceo)*
+## Próximas mejoras (roadmap)
+- [ ] Web app interactiva con Streamlit para pruebas en tiempo real.
+- [ ] API REST para predicciones desde sistemas externos.
+- [ ] Modelo multiclase (incluyendo "Fallecimiento" como categoría).
+- [ ] Análisis de series temporales para predecir picos de accidentalidad.
+
+---
+
+*Parte del portfolio de [Juan Luis León](https://github.com/jleonceo) · [juanluisleon.vercel.app](https://juanluisleon.vercel.app) · [LinkedIn](https://linkedin.com/in/jlleonrodriguez/) · Licencia [MIT](LICENSE)*
