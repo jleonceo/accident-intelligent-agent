@@ -193,8 +193,8 @@ This project works through **28,773 traffic accidents** recorded in Madrid durin
 
 ### Key findings (EDA)
 
-### 1. The clock is predictable
-- **Busiest hour:** 19:00 (2,132 accidents), where the commute home meets evening traffic.
+### 1. A predictable daily pattern
+- **Busiest hour:** 19:00 (2,132 accidents), when the commute home overlaps with evening leisure traffic.
 - **Quietest hour:** 04:00 (187 accidents).
 - **Two peaks a day:** morning (08:00-10:00) and evening (18:00-20:00).
 
@@ -205,8 +205,8 @@ This project works through **28,773 traffic accidents** recorded in Madrid durin
 
 ### 3. Risk factors
 - **Age:** drivers under 25 and over 55 come out more vulnerable.
-- **Accident type:** pedestrian strikes and run-off-road accidents go with higher severity.
-- **Vehicle:** motorcycles and pedestrians carry the higher relative risk.
+- **Accident type:** pedestrian strikes and run-off-road accidents correlate with higher severity.
+- **Vehicle:** motorcycles and pedestrians carry a higher relative risk.
 
 ---
 
@@ -222,7 +222,7 @@ This project works through **28,773 traffic accidents** recorded in Madrid durin
 
 Note: with close to half the severity values missing, these figures come from the records that do carry a valid one. They are not a verdict on the whole dataset.
 
-### What the model leans on most
+### Feature importance
 1. Age of the person involved (midpoint of the range).
 2. Hour of the accident.
 3. Accident type (collision, pedestrian strike, run-off-road).
@@ -230,12 +230,12 @@ Note: with close to half the severity values missing, these figures come from th
 5. Weather conditions.
 6. Vehicle type.
 
-### Taking the model for a spin
+### Running the model
 Open the `notebooks/02_modelo_predictivo_gravedad.ipynb` notebook:
 1. Cell 1: the dependencies install themselves.
 2. Kernel → Restart.
 3. Cell → Run All.
-4. Out come the metrics, the feature-importance plot and the serialized model at `models/gravedad_predictor.pkl`.
+4. You get the metrics, the feature-importance plot and the serialized model at `models/gravedad_predictor.pkl`.
 
 ---
 
@@ -309,12 +309,12 @@ jupyter notebook notebooks/01_eda_exploratorio.ipynb
 
 ---
 
-### What it is good for
+### Business impact
 
 ### Traffic authorities
 - **Putting resources where they count:** the model catches 75% of serious accidents.
-- **Targeted prevention:** campaigns aimed at the hours and districts that carry the risk.
-- **Urban planning:** geospatial evidence for redesigning the streets that keep coming up.
+- **Targeted prevention:** campaigns aimed at the highest-risk hours and districts.
+- **Urban planning:** geospatial data for redesigning high-risk roads.
 
 ### Emergency services
 - **Dispatch that knows more:** wire the model into dispatch to pre-assign resources against predicted severity.
