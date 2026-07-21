@@ -12,6 +12,22 @@ import os
 # Cargar variables de entorno desde .env
 load_dotenv()
 
+def _col(row, nombre):
+    """Busca una columna casando por espacios NORMALIZADOS, no por igualdad exacta.
+
+    El Excel del Ayuntamiento de Madrid escribe la cabecera del expediente con dos
+    espacios ('Nº  EXPEDIENTE'). Buscarla con uno devolvía None en todas las filas y
+    nadie se enteraba, porque `row.get` no falla: devuelve el valor por defecto. Un
+    fallo silencioso de este tipo costó dos meses de una cifra publicada tres veces
+    mayor que la real. Casar por espacios normalizados lo cierra para siempre.
+    """
+    objetivo = " ".join(str(nombre).split()).upper()
+    for clave in row.index:
+        if " ".join(str(clave).split()).upper() == objetivo:
+            return row[clave]
+    return None
+
+
 def limpiar(valor):
     """Convierte NaN/NaT a None para que MySQL inserte NULL"""
     if valor is None:
@@ -70,7 +86,14 @@ def cargar_datos(cursor, df):
             # ===========================================
             # 1. DATOS DEL ACCIDENTE
             # ===========================================
-            expediente   = row.get('Nº EXPEDIENTE', None)
+            # El Excel del Ayuntamiento escribe la cabecera con DOS espacios:
+            # 'Nº  EXPEDIENTE'. Este código buscaba 'Nº EXPEDIENTE' con uno, así que
+            # `row.get` devolvía None SIEMPRE y cada fila caía al `ACC_{index}` de abajo.
+            # Efecto: cada persona implicada se contaba como un accidente distinto, y el
+            # proyecto publicó 28.773 accidentes cuando son 12.634 (2,28 implicados de
+            # media por accidente). Corregido el 21/07/2026 casando la cabecera por
+            # espacios normalizados, para que no vuelva a romperse si cambian el formato.
+            expediente   = _col(row, 'Nº EXPEDIENTE')
             fecha        = limpiar(row.get('FECHA', None))
             hora         = limpiar(row.get('HORA', None))
             calle        = limpiar(row.get('CALLE', None))

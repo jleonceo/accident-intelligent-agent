@@ -12,7 +12,7 @@
 ## Español
 
 ### Resumen ejecutivo
-Este proyecto analiza **28.773 accidentes de tráfico** registrados en Madrid durante 2020, en tres partes:
+Este proyecto analiza **12.634 accidentes de tráfico** registrados en Madrid durante 2020, en tres partes:
 1. **Análisis exploratorio (EDA):** patrones temporales, geográficos y de severidad.
 2. **Modelo predictivo (ML):** clasifica cada accidente como "Leve" o "Grave" con un **accuracy del 72%**.
 3. **Reproducibilidad:** un ETL en Python (`scripts/export_data.py`) y notebooks autocontenidos.
@@ -20,14 +20,27 @@ Este proyecto analiza **28.773 accidentes de tráfico** registrados en Madrid du
 **Objetivo:** aportar información accionable para autoridades de tráfico y servicios de
 emergencia, de cara a la prevención y la respuesta ante siniestros.
 
+> **Corrección del 21/07/2026.** Hasta hoy este README decía "28.773 accidentes" y situaba la
+> hora punta a las 19:00. Las dos cosas eran falsas, y por la misma causa: el cargador buscaba la
+> columna del expediente escrita con **un** espacio (`Nº EXPEDIENTE`) y el Excel del Ayuntamiento la
+> escribe con **dos**. `row.get` no falla cuando no encuentra la clave: devuelve `None`. Así que
+> cada fila caía a un identificador inventado y **cada persona implicada se contaba como un
+> accidente distinto**. Las cifras reales: **12.634 accidentes** y **28.773 personas implicadas**,
+> 2,28 de media por accidente. Al contar accidentes en vez de personas, la hora punta se mueve de
+> las 19:00 a las **14:00**, así que no cambiaba solo el número: cambiaba la conclusión. Corregido
+> el cargador (ahora casa la cabecera por espacios normalizados) y recalculado todo contra el Excel
+> original por una vía independiente.
+
+
 ---
 
 ### Hallazgos clave (EDA)
 
 ### 1. Patrón temporal predecible
-- **Hora pico:** 19:00h (2.132 accidentes), coincidiendo con la salida laboral y el ocio.
-- **Hora mínima:** 04:00h (187 accidentes).
-- **Doble pico diario:** mañana (08:00-10:00h) y tarde (18:00-20:00h).
+- **Hora pico:** 14:00h, con 892 accidentes.
+- **Hora mínima:** 04:00h, con 90.
+- **La tarde pesa más que la mañana:** de 18:00 a 20:00 se acumulan 2.526 accidentes, frente a
+  1.645 entre las 08:00 y las 10:00. La franja de 13:00 a 15:00 (2.469) va casi a la par de la tarde.
 
 ### 2. Distribución de gravedad
 - Entre los datos válidos, la severidad se mantiene **estable (~50% leve / ~50% grave)** durante las 24h.
@@ -182,21 +195,34 @@ Este análisis es una pieza de un portfolio de casos de analítica. Las piezas h
 ## English
 
 ### Executive summary
-This project works through **28,773 traffic accidents** recorded in Madrid during 2020, in three parts:
+This project works through **12,634 traffic accidents** recorded in Madrid during 2020, in three parts:
 1. **Exploratory analysis (EDA):** how accidents fall across the clock, the map and the severity scale.
 2. **Predictive model (ML):** labels each accident "Leve" (minor) or "Grave" (serious), with **72% accuracy**.
 3. **Reproducibility:** a Python ETL (`scripts/export_data.py`) and self-contained notebooks.
 
 **Goal:** give traffic authorities and emergency services something they can act on, both to prevent accidents and to respond to them.
 
+> **Correction, 21 July 2026.** Until today this README claimed "28,773 accidents" and put the busiest
+> hour at 19:00. Both were wrong, for the same reason: the loader looked for the case-number column
+> written with **one** space (`Nº EXPEDIENTE`), and the City Council's spreadsheet writes it with
+> **two**. `row.get` does not fail on a missing key, it returns `None`, so every row fell back to a
+> made-up id and **each person involved was counted as a separate accident**. The real figures:
+> **12,634 accidents** and **28,773 people involved**, 2.28 per accident. Counting accidents instead
+> of people moves the busiest hour from 19:00 to **14:00**, so it was not just the number that
+> changed, it was the conclusion. The loader is fixed and every figure was recomputed straight from
+> the source spreadsheet by an independent route.
+
+
 ---
 
 ### Key findings (EDA)
 
 ### 1. A predictable daily pattern
-- **Busiest hour:** 19:00 (2,132 accidents), when the commute home overlaps with evening leisure traffic.
-- **Quietest hour:** 04:00 (187 accidents).
-- **Two peaks a day:** morning (08:00-10:00) and evening (18:00-20:00).
+- **Busiest hour:** 14:00, with 892 accidents.
+- **Quietest hour:** 04:00, with 90.
+- **The afternoon weighs more than the morning:** 2,526 accidents between 18:00 and 20:00,
+  against 1,645 between 08:00 and 10:00. The 13:00-15:00 stretch (2,469) runs almost level
+  with the evening.
 
 ### 2. How severity is distributed
 - Across the valid records, severity holds steady at **roughly 50% minor / 50% serious** around the clock.
