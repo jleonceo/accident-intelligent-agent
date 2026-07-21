@@ -28,8 +28,15 @@ emergencia, de cara a la prevención y la respuesta ante siniestros.
 > accidente distinto**. Las cifras reales: **12.634 accidentes** y **28.773 personas implicadas**,
 > 2,28 de media por accidente. Al contar accidentes en vez de personas, la hora punta se mueve de
 > las 19:00 a las **14:00**, así que no cambiaba solo el número: cambiaba la conclusión. Corregido
-> el cargador (ahora casa la cabecera por espacios normalizados) y recalculado todo contra el Excel
-> original por una vía independiente.
+> el cargador (ahora casa la cabecera por espacios normalizados) y recalculadas las cifras del README
+> contra el Excel original por una vía independiente. **Los notebooks, los CSV procesados y el
+> dashboard todavía arrastran el conteo viejo**: se corrigen a continuación, y hasta que no lo estén,
+> la cifra buena es la de este README.
+>
+> **Qué cuenta como un accidente:** un número de expediente. Con ese criterio salen 12.634. Tres
+> expedientes (`2020S014759`, `2020S014760`, `2020S014761`) aparecen reutilizados en dos fechas
+> distintas, así que con la clave más estricta (expediente + fecha) serían 12.637. La diferencia es
+> del 0,02% y no mueve ninguna conclusión, pero queda dicha en vez de escondida.
 
 
 ---
@@ -209,8 +216,15 @@ This project works through **12,634 traffic accidents** recorded in Madrid durin
 > made-up id and **each person involved was counted as a separate accident**. The real figures:
 > **12,634 accidents** and **28,773 people involved**, 2.28 per accident. Counting accidents instead
 > of people moves the busiest hour from 19:00 to **14:00**, so it was not just the number that
-> changed, it was the conclusion. The loader is fixed and every figure was recomputed straight from
-> the source spreadsheet by an independent route.
+> changed, it was the conclusion. The loader is fixed and the README figures were recomputed straight
+> from the source spreadsheet by an independent route. **The notebooks, the processed CSVs and the
+> dashboard still carry the old count**: they are being corrected next, and until they are, this
+> README holds the good figure.
+>
+> **What counts as one accident:** one case number. That gives 12,634. Three case numbers
+> (`2020S014759`, `2020S014760`, `2020S014761`) turn up on two different dates, so under the
+> stricter key (case number plus date) it would be 12,637. That is a 0.02% difference and it moves
+> no conclusion, but it is said out loud rather than hidden.
 
 
 ---
