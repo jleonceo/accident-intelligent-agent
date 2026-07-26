@@ -7,6 +7,14 @@ import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
 import os
+import sys
+
+# La consola de Windows usa cp1252 por defecto, y este script imprime simbolos que no caben ahi.
+# Sin esta linea, `python scripts/export_data.py` moria con UnicodeEncodeError en la primera linea
+# de salida, antes de exportar nada.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 load_dotenv()
 

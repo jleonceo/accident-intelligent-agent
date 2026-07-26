@@ -70,20 +70,32 @@ Ninguna de estas cifras viene de la documentación del proyecto: todas salen de 
 | Hora con más accidentes | las 14:00, con 892 |
 | Hora con menos accidentes | las 04:00, con 90 |
 | El cargador corregido, ejecutado en seco | 12.634 accidentes, cero identificadores inventados |
-| La base de datos MySQL, hoy | 28.773 accidentes con identificador inventado, punta a las 19:00 |
-| Columna de gravedad en `involved_parties.csv` | vacía en las 28.773 filas |
-| El cuaderno del modelo sobre esos CSV | 0 registros válidos, no llega a entrenar |
-| El cuaderno de análisis sobre esos CSV | las horas bien, los de gravedad vacíos y uno se rompe |
 | El modelo rehecho desde el Excel, por vía independiente | 71,6 % de acierto |
 | El informe `accident_dashboard.pbix` | una página, cero gráficos |
+
+**Actualizado el 26/07/2026, y las cifras de abajo sustituyen a las que había aquí.** Las anteriores
+describían una base de datos y unos CSV que ya se han regenerado; se conservan en la sección de
+afirmaciones retiradas, porque el registro del fallo es lo que este repositorio ofrece.
+
+| Comprobación | Resultado |
+|---|---|
+| `accidents.csv` publicado | 12.634 filas |
+| `involved_parties.csv` publicado | 28.773 filas |
+| Hora punta en los CSV publicados | las 14:00, con 892 |
+| Hora más floja | las 04:00, con 90 |
+| Columna de gravedad en `involved_parties.csv` | rellena en 15.718 de 28.773, igual que el Excel |
 
 De la franja horaria queda además esto, medido sobre el recuento corregido: entre las 18:00 y las 20:00 se acumulan 2.526 accidentes, frente a 1.645 entre las 08:00 y las 10:00, y la franja de 13:00 a 15:00 va casi a la par de la tarde con 2.469.
 
 ### Tres hallazgos en orden de gravedad creciente
 
-**El arreglo no llegó a los datos.** El cargador está corregido y funciona: ejecutado hoy sobre el Excel devuelve los 12.634 buenos. Nadie volvió a lanzarlo, así que la base de datos sigue con la carga vieja entera. Y como las instrucciones de reproducción mandan ejecutar `export_data.py`, quien las siga hoy sobrescribirá los CSV con la carga mala y verá otra vez la punta de las 19:00.
+**El arreglo no llegó a los datos, y tardó cinco días más en llegar.** El cargador quedó corregido el 21/07 y funcionaba: ejecutado sobre el Excel devolvía los 12.634 buenos. Nadie volvió a lanzarlo. La base de datos siguió con la carga vieja **y con la nueva encima**, porque el cargador no vaciaba las tablas antes de escribir: 41.407 accidentes, que son los 28.773 equivocados más los 12.634 correctos, y 57.546 personas implicadas, el doble exacto de las 28.773 que trae el Excel. De ahí salieron los CSV publicados. Durante cinco días esta página anunció 12.634 accidentes mientras el fichero de al lado tenía 41.407.
 
-**Los CSV publicados perdieron la columna que sostiene el proyecto.** El Excel trae la gravedad rellena en 15.718 de sus 28.773 líneas. En el fichero publicado esa casilla está vacía las 28.773 veces. Sin ella el análisis de gravedad sale en blanco, un gráfico del cuaderno se detiene con un error y el modelo se queda sin casos con los que aprender. Queda un repositorio que publica su acierto en portada mientras publica unos datos con los que ese modelo no se puede entrenar.
+> **Cerrado el 26/07/2026.** El cargador vacía ahora las tablas antes de escribir, la base se recargó y los CSV se reexportaron. Hoy `accidents.csv` tiene 12.634 filas y `involved_parties.csv` 28.773.
+
+**Los CSV publicados perdieron la columna que sostiene el proyecto.** El Excel trae la gravedad rellena en 15.718 de sus 28.773 líneas, y en el fichero publicado esa casilla estaba vacía las 28.773 veces. Sin ella el análisis de gravedad salía en blanco, un gráfico del cuaderno se detenía con un error y el modelo se quedaba sin casos con los que aprender. Quedaba un repositorio que publicaba su acierto en portada mientras publicaba unos datos con los que ese modelo no se podía entrenar.
+
+> **Cerrado el 26/07/2026** por la misma recarga: la columna vuelve a estar rellena en 15.718 de 28.773, que es exactamente lo que trae el Excel. No hizo falta tocar nada del análisis; el dato llevaba dos meses perdiéndose en la carga.
 
 **La etiqueta parece estar del revés.** Rehecho el modelo desde el Excel original sale un 71,6 % de acierto, muy cerca del 72 % que anunciaba la portada, de modo que la magnitud se sostiene. Lo que no se sostiene es a qué llama «grave». Entre los ocupantes de camión rígido lo son el 81,9 %, entre los peatones el 9,8 % y entre las motos pequeñas el 10,0 %. De 958 peatones atropellados, solo 94 llevan el código 14 que el cuaderno traduce por «grave». ¿Es creíble que un peatón atropellado salga mejor parado que quien viajaba dentro de un camión? Quien no necesitó asistencia sanitaria lleva con toda probabilidad ese 14 que el cuaderno lee como el peor de todos.
 
@@ -151,6 +163,9 @@ accident-intelligent-agent/
 │
 ├── accident_dashboard.pbix     # Informe de Power BI, hoy con una página en blanco
 │
+├── sql/
+│   └── schema.sql              # Crea la base de datos y las dos tablas. Ejecutar lo primero
+│
 └── data/
     ├── raw/2020_Accidentalidad.xlsx
     └── processed/              # CSV exportados, hoy sin la columna de gravedad
@@ -169,9 +184,21 @@ conda activate accident_agent
 pip install -r requirements.txt
 
 cp .env.example .env      # editar con los datos de tu MySQL
+mysql -u tu_usuario -p < sql/schema.sql   # crea la base de datos y las dos tablas
 python scripts/load_data.py    # recarga la base de datos con el cargador corregido
 python scripts/export_data.py  # vuelve a exportar los CSV
 ```
+
+La línea del esquema **faltaba hasta el 26/07/2026**, y sin ella estos pasos no funcionaban fuera
+del portátil donde nació el proyecto: `load_data.py` solo hace `USE accident_db` y da por hecho que
+las tablas ya están. Quien clonara el repositorio y siguiera las instrucciones al pie de la letra
+fallaba en la primera consulta.
+
+`load_data.py` vacía las tablas antes de cargar, que es lo que significa «recarga». Hasta esa misma
+fecha no lo hacía, y ejecutarlo dos veces duplicaba las personas implicadas: los accidentes chocaban
+con su clave primaria y se descartaban, pero `involved_parties` no tiene clave única y sus filas
+entraban otra vez. Así se publicaron unos CSV con 41.407 accidentes y 57.546 personas mientras esta
+misma página anunciaba 12.634 y 28.773.
 
 El orden importa. Ejecutar `export_data.py` sin recargar antes la base de datos sobrescribe los CSV con el recuento viejo de 28.773, que es lo que hacían las instrucciones anteriores de este README.
 
@@ -337,6 +364,9 @@ accident-intelligent-agent/
 │   └── gravedad_predictor.pkl  # Trained, serialized model
 │
 ├── accident_dashboard.pbix     # Power BI report, today a single blank page
+│
+├── sql/
+│   └── schema.sql              # Creates the database and the two tables. Run this first
 │
 └── data/
     ├── raw/2020_Accidentalidad.xlsx

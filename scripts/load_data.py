@@ -8,6 +8,14 @@ import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
 import os
+import sys
+
+# La consola de Windows usa cp1252 por defecto, y este script imprime simbolos que no caben ahi.
+# Sin esta linea, `python scripts/load_data.py` moria con UnicodeEncodeError en la primera linea
+# de salida, antes de leer un solo dato: el codigo funcionaba y el usuario veia un traceback.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 # Cargar variables de entorno desde .env
 load_dotenv()
@@ -71,6 +79,27 @@ def leer_excel(ruta_archivo):
     print(f"📋 Columnas encontradas: {list(df.columns)}")
 
     return df
+
+def vaciar_tablas(cursor):
+    """Deja las tablas vacías antes de cargar. Es lo que el README llama «recarga».
+
+    POR QUE (26/07/2026). Este cargador NO ERA IDEMPOTENTE, y el daño ya estaba hecho y publicado.
+    Al ejecutarlo por segunda vez, cada accidente chocaba con su clave primaria y se descartaba,
+    pero `involved_parties` no tiene clave única: sus filas se insertaban OTRA VEZ. Medido el
+    26/07 sobre la base viva: 57.546 personas implicadas donde el Excel trae 28.773, o sea el
+    doble exacto; y 41.407 accidentes, que son los 28.773 de la carga vieja y equivocada más los
+    12.634 de la corregida, conviviendo en la misma tabla.
+
+    De ahí salieron los CSV que el repositorio publica. El README anunciaba 12.634 accidentes
+    desde el 21/07 mientras `data/processed/accidents.csv` tenía 41.407 filas. Es literalmente la
+    lección que ese mismo README enseña: corregir la portada no corrige el proyecto.
+
+    Se borra en el orden de las claves ajenas: primero las personas, después los accidentes.
+    """
+    print("🧹 Vaciando las tablas antes de recargar (el README llama a esto «recarga»)...")
+    cursor.execute("DELETE FROM involved_parties")
+    cursor.execute("DELETE FROM accidents")
+
 
 def cargar_datos(cursor, df):
     """Cargar datos a las tablas"""
@@ -161,16 +190,28 @@ def main():
     try:
         crear_base_datos(cursor)
         df = leer_excel(ruta_excel)
+        vaciar_tablas(cursor)
         accidentes, involucrados = cargar_datos(cursor, df)
         conexion.commit()
 
         print("\n" + "=" * 70)
-        print("✅ CARGA COMPLETADA EXITOSAMENTE")
+        # El titular depende del resultado. Antes decía SIEMPRE «CARGA COMPLETADA EXITOSAMENTE»,
+        # incluso con cero accidentes cargados y un traceback dos líneas más abajo.
+        print("✅ CARGA COMPLETADA" if accidentes else "❌ NO SE HA CARGADO NINGÚN ACCIDENTE")
         print("=" * 70)
         print(f"📦 Accidentes únicos cargados:      {accidentes}")
         print(f"👥 Personas involucradas cargadas:  {involucrados}")
         print(f"💾 Base de datos:                   {os.getenv('DB_NAME')}")
-        print(f"📊 Promedio personas por accidente: {involucrados/accidentes:.2f}")
+        # El promedio solo existe si se cargó algo. Con cero accidentes esta línea moría con
+        # ZeroDivisionError DESPUÉS de anunciar "CARGA COMPLETADA EXITOSAMENTE", que es la peor
+        # combinación posible: el usuario lee que todo fue bien y acto seguido ve un traceback.
+        # Cero accidentes no es un error del script, es que el Excel no trajo filas válidas, y eso
+        # hay que decirlo con esas palabras.
+        if accidentes:
+            print(f"📊 Promedio personas por accidente: {involucrados/accidentes:.2f}")
+        else:
+            print("⚠️  No se ha cargado ningún accidente: revisa que el Excel de origen tenga")
+            print("    filas y que las cabeceras coincidan con las que espera `_col`.")
         print("=" * 70)
 
     except Exception as e:
