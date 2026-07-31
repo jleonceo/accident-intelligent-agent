@@ -22,29 +22,29 @@ Lo que hoy tiene más valor aquí es el registro de ese fallo y de lo que arrast
 
 ### El ejemplo que lo explica todo
 
-Un programa localiza cada columna de una hoja de cálculo por el nombre escrito en su primera fila, la **cabecera**. El Excel del Ayuntamiento escribe la columna del expediente con dos espacios, `Nº  EXPEDIENTE`, y el cargador la buscaba con uno.
+Un programa localiza cada columna de una hoja de cálculo por su nombre. Ese nombre está escrito en la primera fila y se llama **cabecera**. El Excel del Ayuntamiento escribe la columna del expediente con dos espacios, `Nº  EXPEDIENTE`, y el cargador la buscaba con uno.
 
-Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa columna no protesta cuando no encuentra lo que le piden: devuelve un vacío y sigue adelante. Cada línea se quedaba sin número de expediente, el programa le inventaba uno, y así cada persona implicada acababa registrada como un accidente distinto. Eso se llama **fallo silencioso**. Un programa que se detiene con un aviso rojo obliga a mirar, mientras que este deja publicar.
+Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa columna no protesta cuando no encuentra lo que le piden. Devuelve un vacío y sigue adelante. Cada línea se quedaba sin número de expediente y el programa le inventaba uno. Así cada persona implicada acababa registrada como un accidente distinto. Eso se llama **fallo silencioso**. Un programa que se detiene con un aviso rojo obliga a mirar, mientras que este deja publicar.
 
-> **Corrección del 21/07/2026.** Hasta esa fecha este README decía «28.773 accidentes» y situaba la hora punta a las 19:00. Las dos cosas eran falsas por la causa que se acaba de explicar. Las cifras reales son **12.634 accidentes** y **28.773 personas implicadas**, 2,28 de media por accidente. Al contar accidentes en lugar de personas, la hora punta se mueve de las 19:00 a las **14:00**, así que no cambiaba solo el número: cambiaba la conclusión. El cargador quedó corregido y las cifras se recalcularon contra el Excel original por una vía independiente.
+> **Corrección del 21/07/2026.** Hasta esa fecha este README decía «28.773 accidentes» y situaba la hora punta a las 19:00. Las dos cosas eran falsas por la causa que se acaba de explicar. Las cifras reales son **12.634 accidentes** y **28.773 personas implicadas**, 2,28 de media por accidente. Al contar accidentes en lugar de personas, la hora punta se mueve de las 19:00 a las **14:00**. No cambiaba solo el número: cambiaba la conclusión. El cargador quedó corregido y las cifras se recalcularon contra el Excel original por una vía independiente.
 >
-> **Qué cuenta como un accidente:** un número de expediente. Con ese criterio salen 12.634. Tres expedientes (`2020S014759`, `2020S014760`, `2020S014761`) aparecen reutilizados en dos fechas distintas, así que con la clave más estricta de expediente más fecha serían 12.637. La diferencia es del 0,02 % y no mueve ninguna conclusión, aunque queda dicha en vez de escondida.
+> **Qué cuenta como un accidente:** un número de expediente. Con ese criterio salen 12.634. Tres expedientes (`2020S014759`, `2020S014760`, `2020S014761`) aparecen reutilizados en dos fechas distintas. Con la clave más estricta de expediente más fecha serían 12.637. La diferencia es del 0,02 % y no mueve ninguna conclusión, aunque queda dicha en vez de escondida.
 
 ### Qué contiene el repositorio
 
-Guarda quince ficheros: dos programas, dos cuadernos, un modelo entrenado, un informe de Power BI y los datos de partida. Encadena tres tareas que van una detrás de otra. Mete la hoja del Ayuntamiento en una base de datos, la explora buscando patrones por hora y por distrito, y entrena un programa que intenta adivinar si un accidente saldrá leve o grave.
+Guarda quince ficheros: dos programas, dos cuadernos, un modelo entrenado, un informe de Power BI y los datos de partida. Encadena tres tareas que van una detrás de otra. Mete la hoja del Ayuntamiento en una base de datos. La explora buscando patrones por hora y por distrito. Y entrena un programa que intenta adivinar si un accidente saldrá leve o grave.
 
-Ese primer trabajo de mover datos se llama **ETL**, siglas inglesas de extraer, transformar y cargar, o sea llevar los datos de donde están hasta donde se van a usar limpiándolos por el camino. Aquí lo hacen dos programas: `load_data.py` mete el Excel en la base de datos y `export_data.py` la vacía en dos ficheros de texto separados por comas, los **CSV**, el formato que lee cualquier herramienta.
+Ese primer trabajo de mover datos se llama **ETL**, siglas inglesas de extraer, transformar y cargar. Es llevar los datos de donde están hasta donde se van a usar, limpiándolos por el camino. Aquí lo hacen dos programas. `load_data.py` mete el Excel en la base de datos y `export_data.py` la vacía en dos ficheros de texto separados por comas. Esos ficheros son los **CSV**, el formato que lee cualquier herramienta.
 
-Los dos análisis viven en sendos **cuadernos**, documentos que alternan texto explicativo con trozos de programa que se ejecutan uno a uno y dejan debajo su resultado. Ambos llevan un aviso arriba del todo desde julio: los resultados que tienen guardados dentro son los antiguos.
+Los dos análisis viven en sendos **cuadernos**. Un cuaderno alterna texto explicativo con trozos de programa que se ejecutan uno a uno y dejan debajo su resultado. Ambos llevan un aviso arriba del todo desde julio. Los resultados que tienen guardados dentro son los antiguos.
 
 ### Los conceptos del modelo
 
-**Entrenar** un modelo consiste en enseñarle miles de casos con la respuesta ya conocida para que deduzca la regla por su cuenta. Después se le dan casos que nunca vio y se cuenta cuántos acierta; ese porcentaje recibe el nombre de **accuracy** o acierto global.
+**Entrenar** un modelo consiste en enseñarle miles de casos con la respuesta ya conocida. Con ellos deduce la regla por su cuenta. Después se le dan casos que nunca vio y se cuenta cuántos acierta. Ese porcentaje recibe el nombre de **accuracy** o acierto global.
 
-La **etiqueta** es la respuesta correcta que se le enseña al modelo mientras aprende. Aquí sale de una columna de códigos numéricos, y el cuaderno decide que del 1 al 7 significa «leve» y que el 14 significa «grave». Todo el modelo cuelga de esa decisión. Si la etiqueta está cambiada, las cuentas siguen saliendo, los gráficos siguen dibujándose y el porcentaje de acierto sigue apareciendo, solo que describen lo contrario de lo que dicen describir.
+La **etiqueta** es la respuesta correcta que se le enseña al modelo mientras aprende. Aquí sale de una columna de códigos numéricos. El cuaderno decide que del 1 al 7 significa «leve» y que el 14 significa «grave». Todo el modelo cuelga de esa decisión. Si la etiqueta está cambiada, las cuentas siguen saliendo, los gráficos siguen dibujándose y el porcentaje de acierto sigue apareciendo. Solo que describen lo contrario de lo que dicen describir.
 
-La **importancia de una variable** mide cuánto pesa ese dato en las decisiones del modelo, repartida entre todas las variables hasta sumar el cien por cien. Es la respuesta a la pregunta de qué mira el programa antes de decidir.
+La **importancia de una variable** mide cuánto pesa ese dato en las decisiones del modelo. Se reparte entre todas las variables hasta sumar el cien por cien. Es la respuesta a la pregunta de qué mira el programa antes de decidir.
 
 ### Cómo funciona por dentro
 
@@ -54,16 +54,16 @@ Una línea de la hoja original tiene esta pinta:
 2020S000001  01/01/2020  01:15  SAN BLAS-CANILLEJAS  Conductor  Turismo  14
 ```
 
-1. **Se carga.** `load_data.py` lee esa línea, saca el expediente `2020S000001` y crea el accidente la primera vez que lo ve. La persona queda apuntada aparte, ligada a ese expediente.
+1. **Se carga.** `load_data.py` lee esa línea y saca el expediente `2020S000001`. Crea el accidente la primera vez que lo ve. La persona queda apuntada aparte, ligada a ese expediente.
 2. **Se exporta.** `export_data.py` pide a la base de datos las dos tablas y las escribe en `accidents.csv` y `involved_parties.csv`.
 3. **Se analiza.** El primer cuaderno cuenta accidentes por hora y por distrito y dibuja los gráficos.
-4. **Se entrena.** El segundo junta persona y accidente, convierte el rango de edad en un número, traduce el código de gravedad a la etiqueta y entrena el modelo con el 80 % de los casos para medirlo con el 20 % restante.
+4. **Se entrena.** El segundo junta persona y accidente. Convierte el rango de edad en un número y traduce el código de gravedad a la etiqueta. Entrena el modelo con el 80 % de los casos para medirlo con el 20 % restante.
 
-Son cuatro eslabones sin una sola comprobación entre ellos. Nada pregunta si el número de accidentes que sale del paso 1 se parece al esperado, ausencia que es justo la que dejó pasar el fallo de la cabecera.
+Son cuatro eslabones sin una sola comprobación entre ellos. Nada pregunta si el número de accidentes que sale del paso 1 se parece al esperado. Esa ausencia es justo la que dejó pasar el fallo de la cabecera.
 
 ### Qué está medido
 
-Ninguna de estas cifras viene de la documentación del proyecto: todas salen de ejecutar el código el 22/07/2026.
+Ninguna de estas cifras viene de la documentación del proyecto. Todas salen de ejecutar el código el 22/07/2026.
 
 | Comprobación | Resultado |
 |---|---|
@@ -75,8 +75,8 @@ Ninguna de estas cifras viene de la documentación del proyecto: todas salen de 
 | El modelo rehecho desde el Excel, por vía independiente | 71,6 % de acierto |
 | El informe `accident_dashboard.pbix` | una página, cero gráficos |
 
-**Actualizado el 26/07/2026, y las cifras de abajo sustituyen a las que había aquí.** Las anteriores
-describían una base de datos y unos CSV que ya se han regenerado; se conservan en la sección de
+**Actualizado el 26/07/2026.** Las cifras de abajo sustituyen a las que había aquí. Las anteriores
+describían una base de datos y unos CSV que ya se han regenerado. Se conservan en la sección de
 afirmaciones retiradas, porque el registro del fallo es lo que este repositorio ofrece.
 
 | Comprobación | Resultado |
