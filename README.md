@@ -10,13 +10,15 @@
 
 ### Qué problema resuelve
 
-Alguien te encarga decir cuántos accidentes de tráfico hubo en Madrid durante 2020. El Ayuntamiento publica una hoja de cálculo con casi veintinueve mil líneas, así que la respuesta parece estar a un clic de distancia.
+Alguien te encarga decir cuántos accidentes de tráfico hubo en Madrid durante 2020. El Ayuntamiento publica una hoja de cálculo con casi veintinueve mil líneas. La respuesta parece estar a un clic.
 
-No lo está. Cada línea de esa hoja corresponde a una persona implicada, de modo que un accidente ocupa tantas líneas como gente hubiera dentro. En un choque entre dos coches con un pasajero hay tres líneas y un solo siniestro, así que quien cuente líneas dará una cifra que más que duplica la verdadera.
+No lo está. Cada línea de esa hoja es una persona implicada. Un accidente ocupa tantas líneas como gente hubiera dentro. En un choque entre dos coches con un pasajero hay tres líneas y un solo siniestro. Quien cuente líneas dará una cifra que más que duplica la verdadera.
 
-Lo peor no es el número. Si por la tarde los accidentes llevan más gente dentro, contar personas desplaza la hora de mayor riesgo, y quien reparta ambulancias por franjas horarias las colocará donde no tocan.
+Lo peor no es el número. Si por la tarde los accidentes llevan más gente dentro, contar personas desplaza la hora de mayor riesgo. Y quien reparta ambulancias por franjas horarias las colocará donde no tocan.
 
-Este proyecto contó líneas. Durante dos meses anunció 28.773 accidentes y situó la punta a las siete de la tarde. Las cifras buenas son 12.634 accidentes y las dos del mediodía. Lo que hoy tiene más valor aquí es el registro de ese fallo y de todo lo que arrastró detrás.
+Este proyecto contó líneas. Durante dos meses anunció 28.773 accidentes y situó la punta a las siete de la tarde. Las cifras buenas son 12.634 accidentes y las dos del mediodía.
+
+Lo que hoy tiene más valor aquí es el registro de ese fallo y de lo que arrastró detrás.
 
 ### El ejemplo que lo explica todo
 
