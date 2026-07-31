@@ -10,9 +10,9 @@
 
 ### Qué problema resuelve
 
-Alguien te encarga decir cuántos accidentes de tráfico hubo en Madrid durante 2020. El Ayuntamiento publica una hoja de cálculo con casi veintinueve mil líneas. La respuesta parece estar a un clic.
+Alguien te encarga decir cuántos accidentes de tráfico hubo en Madrid durante 2020, y como el Ayuntamiento publica una hoja de cálculo con casi veintinueve mil líneas que cualquiera puede descargar y contar en un minuto, la respuesta parece estar a un clic.
 
-No lo está. Cada línea de esa hoja es una persona implicada. Un accidente ocupa tantas líneas como gente hubiera dentro. En un choque entre dos coches con un pasajero hay tres líneas y un solo siniestro. Quien cuente líneas dará una cifra que más que duplica la verdadera.
+No lo está. Cada línea de esa hoja es una persona implicada, de manera que un accidente ocupa tantas líneas como gente hubiera dentro y en un choque entre dos coches con un pasajero salen tres líneas para un solo siniestro. Quien cuente líneas dará una cifra que más que duplica la verdadera.
 
 Lo peor no es el número. Si por la tarde los accidentes llevan más gente dentro, contar personas desplaza la hora de mayor riesgo. Y quien reparta ambulancias por franjas horarias las colocará donde no tocan.
 
@@ -24,7 +24,7 @@ Lo que hoy tiene más valor aquí es el registro de ese fallo y de lo que arrast
 
 Un programa localiza cada columna de una hoja de cálculo por su nombre. Ese nombre está escrito en la primera fila y se llama **cabecera**. El Excel del Ayuntamiento escribe la columna del expediente con dos espacios, `Nº  EXPEDIENTE`, y el cargador la buscaba con uno.
 
-Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa columna no protesta cuando no encuentra lo que le piden: devuelve un vacío y sigue adelante. Cada línea se quedaba sin número de expediente y el programa le inventaba uno. Así cada persona implicada acababa registrada como un accidente distinto. Eso se llama **fallo silencioso**. Un programa que se detiene con un aviso rojo obliga a mirar, mientras que este deja publicar.
+Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa columna no protesta cuando no encuentra lo que le piden: devuelve un vacío y sigue adelante, de manera que cada línea se quedaba sin número de expediente y el programa le inventaba uno de su cosecha. Así cada persona implicada acababa registrada como un accidente distinto. Eso se llama **fallo silencioso**. Un programa que se detiene con un aviso rojo obliga a mirar. Este deja publicar.
 
 > **Corrección del 21/07/2026.** Hasta esa fecha este README decía «28.773 accidentes» y situaba la hora punta a las 19:00. Las dos cosas eran falsas por la causa que se acaba de explicar. Las cifras reales son **12.634 accidentes** y **28.773 personas implicadas**, 2,28 de media por accidente. Al contar accidentes en lugar de personas, la hora punta se mueve de las 19:00 a las **14:00**. No cambiaba solo el número: cambiaba la conclusión. El cargador quedó corregido y las cifras se recalcularon contra el Excel original por una vía independiente.
 >
@@ -32,11 +32,11 @@ Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa c
 
 ### Qué contiene el repositorio
 
-Guarda quince ficheros. Dos programas, dos cuadernos, un modelo entrenado, un informe de Power BI y los datos de partida. Encadena tres tareas que van una detrás de otra. Mete la hoja del Ayuntamiento en una base de datos y la explora buscando patrones por hora y por distrito. Y entrena un programa que intenta adivinar si un accidente saldrá leve o grave.
+Guarda quince ficheros. Dos programas, dos cuadernos, un modelo entrenado, un informe de Power BI y los datos de partida. Encadena tres tareas que van una detrás de otra: mete la hoja del Ayuntamiento en una base de datos, la explora buscando patrones por hora y por distrito, y entrena un programa que intenta adivinar si un accidente saldrá leve o grave.
 
 Ese primer trabajo de mover datos se llama **ETL**, siglas inglesas de extraer, transformar y cargar, o sea llevar los datos de donde están hasta donde se van a usar limpiándolos por el camino. Aquí lo hacen dos programas. `load_data.py` mete el Excel en la base de datos y `export_data.py` la vacía en dos ficheros de texto separados por comas. Esos ficheros son los **CSV**, el formato que lee cualquier herramienta.
 
-Los dos análisis viven en sendos **cuadernos**, documentos que alternan texto explicativo con trozos de programa que se ejecutan uno a uno y dejan debajo su resultado. Ambos llevan un aviso arriba del todo desde julio. Los resultados que tienen guardados dentro son los antiguos.
+Los dos análisis viven en sendos **cuadernos**, documentos que alternan texto explicativo con trozos de programa que se ejecutan uno a uno y dejan debajo su resultado. Ambos llevan aviso desde julio. Los resultados guardados dentro son los antiguos.
 
 ### Los conceptos del modelo
 
@@ -59,7 +59,7 @@ Una línea de la hoja original tiene esta pinta:
 3. **Se analiza.** El primer cuaderno cuenta accidentes por hora y por distrito y dibuja los gráficos.
 4. **Se entrena.** El segundo junta persona y accidente. Convierte el rango de edad en un número y traduce el código de gravedad a la etiqueta. Entrena el modelo con el 80 % de los casos para medirlo con el 20 % restante.
 
-Son cuatro eslabones sin una sola comprobación entre ellos. Nada pregunta si el número de accidentes que sale del paso 1 se parece al esperado. Esa ausencia es justo la que dejó pasar el fallo de la cabecera.
+Son cuatro eslabones. Entre ellos no hay una sola comprobación. Nada pregunta si el número de accidentes que sale del paso 1 se parece al esperado. Esa ausencia es justo la que dejó pasar el fallo de la cabecera.
 
 ### Qué está medido
 
@@ -192,15 +192,15 @@ python scripts/export_data.py  # vuelve a exportar los CSV
 ```
 
 La línea del esquema **faltaba hasta el 26/07/2026**. Sin ella estos pasos no funcionaban fuera del
-portátil donde nació el proyecto. `load_data.py` solo hace `USE accident_db` y da por hecho que las
-tablas ya están. Quien clonara el repositorio y siguiera las instrucciones al pie de la letra
-fallaba en la primera consulta.
+portátil donde nació el proyecto, porque `load_data.py` solo hace `USE accident_db` y da por hecho
+que las tablas ya están, así que quien clonara el repositorio y siguiera las instrucciones al pie de
+la letra fallaba en la primera consulta.
 
 `load_data.py` vacía las tablas antes de cargar, que es lo que significa «recarga». Hasta esa misma
-fecha no lo hacía, y ejecutarlo dos veces duplicaba las personas implicadas. Los accidentes chocaban
-con su clave primaria y se descartaban. Pero `involved_parties` no tiene clave única y sus filas
-entraban otra vez. Así se publicaron unos CSV con 41.407 accidentes y 57.546 personas mientras esta
-misma página anunciaba 12.634 y 28.773.
+fecha no lo hacía. Ejecutarlo dos veces duplicaba las personas implicadas, porque los accidentes
+chocaban con su clave primaria y se descartaban mientras `involved_parties`, que no tiene clave
+única, dejaba entrar otra vez todas sus filas. Así se publicaron unos CSV con 41.407 accidentes y
+57.546 personas mientras esta misma página anunciaba 12.634 y 28.773.
 
 El orden importa. Ejecutar `export_data.py` sin recargar antes la base de datos sobrescribe los CSV con el recuento viejo de 28.773, que es lo que hacían las instrucciones anteriores de este README.
 
@@ -226,9 +226,9 @@ Este trabajo es una pieza de un portfolio de casos de analítica. Estas son las 
 
 ### The problem it addresses
 
-Someone asks you how many road accidents there were in Madrid during 2020. The City Council publishes a spreadsheet with almost twenty-nine thousand rows, so the answer looks like it is one click away.
+Someone asks you how many road accidents there were in Madrid during 2020, and since the City Council publishes a spreadsheet with almost twenty-nine thousand rows that anyone can download and count in a minute, the answer looks like it is one click away.
 
-It is not. Every row of that spreadsheet is one person involved, so a single accident takes up as many rows as there were people inside it. A collision between two cars carrying one passenger fills three rows and is one crash. Anyone counting rows will report a figure more than double the real one.
+It is not. Every row of that spreadsheet is one person involved, so a single accident takes up as many rows as there were people inside it and a collision between two cars carrying one passenger fills three rows for one single crash. Anyone counting rows will report a figure more than double the real one.
 
 The number is not the worst part. If afternoon accidents carry more people inside them, counting people shifts the peak risk hour. Whoever allocates ambulances by time of day will place them where they are not needed.
 
@@ -238,7 +238,7 @@ This project counted rows. For two months it announced 28,773 accidents and put 
 
 A program finds each column of a spreadsheet by its name. That name is written in the first row and is called the **header**. The City Council's Excel writes the case-number column with two spaces, `Nº  EXPEDIENTE`, and the loader was looking for it with one.
 
-That is where the whole damage sits. The `row.get` instruction it used to ask for that column does not complain when it fails to find what it was asked for: it returns an empty value and carries on. Every row was left without a case number and the program invented one for it. So each person involved ended up recorded as a separate accident. That is called a **silent failure**. A program that stops with a red warning forces you to look, whereas this one lets you publish.
+That is where the whole damage sits. The `row.get` instruction it used to ask for that column does not complain when it fails to find what it was asked for: it returns an empty value and carries on, so every row was left without a case number and the program made one up on the spot. Each person involved ended up recorded as a separate accident. That is called a **silent failure**. A program that stops with a red warning forces you to look. This one lets you publish.
 
 > **Correction, 21 July 2026.** Until that date this README claimed "28,773 accidents" and put the busiest hour at 19:00. Both were wrong, for the reason just explained. The real figures are **12,634 accidents** and **28,773 people involved**, 2.28 per accident. Counting accidents instead of people moves the busiest hour from 19:00 to **14:00**. It was not just the number that changed: the conclusion changed with it. The loader was fixed and the figures were recomputed straight from the source spreadsheet by an independent route.
 >
@@ -246,11 +246,11 @@ That is where the whole damage sits. The `row.get` instruction it used to ask fo
 
 ### What the repository holds
 
-It keeps fifteen files. Two programs, two notebooks, a trained model, a Power BI report and the source data. It chains three tasks that run one after another. It loads the Council spreadsheet into a database and explores it for patterns by hour and by district. And it trains a program that tries to guess whether an accident came out minor or serious.
+It keeps fifteen files. Two programs, two notebooks, a trained model, a Power BI report and the source data. It chains three tasks that run one after another: loading the Council spreadsheet into a database, exploring that database for patterns by hour and by district, and training a program that tries to guess whether an accident came out minor or serious.
 
 That first job of moving data around is called **ETL**, for extract, transform and load. It means carrying data from where it sits to where it will be used, cleaning it on the way. Two programs do it here. `load_data.py` puts the Excel into the database and `export_data.py` empties the database into two comma-separated text files. Those files are the **CSVs**, the format any tool can read.
 
-Both analyses live in **notebooks**, documents that alternate explanatory text with chunks of program that run one at a time and leave their output underneath. Each of them has carried a warning at the top since July. The results saved inside them are the old ones.
+Both analyses live in **notebooks**, documents that alternate explanatory text with chunks of program that run one at a time and leave their output underneath. Each has carried a warning since July. The results saved inside them are the old ones.
 
 ### The model's concepts
 
@@ -273,7 +273,7 @@ One row of the original spreadsheet looks like this:
 3. **It is analysed.** The first notebook counts accidents by hour and by district and draws the charts.
 4. **It is trained on.** The second joins person to accident. It turns the age range into a number and translates the severity code into the label. It trains the model on 80% of the cases to measure it on the remaining 20%.
 
-These are four links with not one check between them. Nothing asks whether the accident count coming out of step 1 resembles what was expected, an absence that is exactly what let the header bug through.
+These are four links. Between them there is not one check. Nothing asks whether the accident count coming out of step 1 resembles what was expected, which is exactly the absence that let the header bug reach the front page.
 
 ### What has been measured
 
