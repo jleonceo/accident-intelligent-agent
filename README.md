@@ -24,7 +24,7 @@ Lo que hoy tiene más valor aquí es el registro de ese fallo y de lo que arrast
 
 Un programa localiza cada columna de una hoja de cálculo por su nombre. Ese nombre está escrito en la primera fila y se llama **cabecera**. El Excel del Ayuntamiento escribe la columna del expediente con dos espacios, `Nº  EXPEDIENTE`, y el cargador la buscaba con uno.
 
-Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa columna no protesta cuando no encuentra lo que le piden. Devuelve un vacío y sigue adelante. Cada línea se quedaba sin número de expediente y el programa le inventaba uno. Así cada persona implicada acababa registrada como un accidente distinto. Eso se llama **fallo silencioso**. Un programa que se detiene con un aviso rojo obliga a mirar, mientras que este deja publicar.
+Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa columna no protesta cuando no encuentra lo que le piden: devuelve un vacío y sigue adelante. Cada línea se quedaba sin número de expediente y el programa le inventaba uno. Así cada persona implicada acababa registrada como un accidente distinto. Eso se llama **fallo silencioso**. Un programa que se detiene con un aviso rojo obliga a mirar, mientras que este deja publicar.
 
 > **Corrección del 21/07/2026.** Hasta esa fecha este README decía «28.773 accidentes» y situaba la hora punta a las 19:00. Las dos cosas eran falsas por la causa que se acaba de explicar. Las cifras reales son **12.634 accidentes** y **28.773 personas implicadas**, 2,28 de media por accidente. Al contar accidentes en lugar de personas, la hora punta se mueve de las 19:00 a las **14:00**. No cambiaba solo el número: cambiaba la conclusión. El cargador quedó corregido y las cifras se recalcularon contra el Excel original por una vía independiente.
 >
@@ -32,19 +32,19 @@ Ahí está el daño entero. La instrucción `row.get` que usaba para pedir esa c
 
 ### Qué contiene el repositorio
 
-Guarda quince ficheros: dos programas, dos cuadernos, un modelo entrenado, un informe de Power BI y los datos de partida. Encadena tres tareas que van una detrás de otra. Mete la hoja del Ayuntamiento en una base de datos. La explora buscando patrones por hora y por distrito. Y entrena un programa que intenta adivinar si un accidente saldrá leve o grave.
+Guarda quince ficheros. Dos programas, dos cuadernos, un modelo entrenado, un informe de Power BI y los datos de partida. Encadena tres tareas que van una detrás de otra. Mete la hoja del Ayuntamiento en una base de datos y la explora buscando patrones por hora y por distrito. Y entrena un programa que intenta adivinar si un accidente saldrá leve o grave.
 
-Ese primer trabajo de mover datos se llama **ETL**, siglas inglesas de extraer, transformar y cargar. Es llevar los datos de donde están hasta donde se van a usar, limpiándolos por el camino. Aquí lo hacen dos programas. `load_data.py` mete el Excel en la base de datos y `export_data.py` la vacía en dos ficheros de texto separados por comas. Esos ficheros son los **CSV**, el formato que lee cualquier herramienta.
+Ese primer trabajo de mover datos se llama **ETL**, siglas inglesas de extraer, transformar y cargar, o sea llevar los datos de donde están hasta donde se van a usar limpiándolos por el camino. Aquí lo hacen dos programas. `load_data.py` mete el Excel en la base de datos y `export_data.py` la vacía en dos ficheros de texto separados por comas. Esos ficheros son los **CSV**, el formato que lee cualquier herramienta.
 
-Los dos análisis viven en sendos **cuadernos**. Un cuaderno alterna texto explicativo con trozos de programa que se ejecutan uno a uno y dejan debajo su resultado. Ambos llevan un aviso arriba del todo desde julio. Los resultados que tienen guardados dentro son los antiguos.
+Los dos análisis viven en sendos **cuadernos**, documentos que alternan texto explicativo con trozos de programa que se ejecutan uno a uno y dejan debajo su resultado. Ambos llevan un aviso arriba del todo desde julio. Los resultados que tienen guardados dentro son los antiguos.
 
 ### Los conceptos del modelo
 
-**Entrenar** un modelo consiste en enseñarle miles de casos con la respuesta ya conocida. Con ellos deduce la regla por su cuenta. Después se le dan casos que nunca vio y se cuenta cuántos acierta. Ese porcentaje recibe el nombre de **accuracy** o acierto global.
+**Entrenar** un modelo consiste en enseñarle miles de casos con la respuesta ya conocida. Con ellos deduce la regla por su cuenta. Después se le dan casos que nunca vio y se cuenta cuántos acierta; ese porcentaje recibe el nombre de **accuracy** o acierto global.
 
-La **etiqueta** es la respuesta correcta que se le enseña al modelo mientras aprende. Aquí sale de una columna de códigos numéricos. El cuaderno decide que del 1 al 7 significa «leve» y que el 14 significa «grave». Todo el modelo cuelga de esa decisión. Si la etiqueta está cambiada, las cuentas siguen saliendo, los gráficos siguen dibujándose y el porcentaje de acierto sigue apareciendo. Solo que describen lo contrario de lo que dicen describir.
+La **etiqueta** es la respuesta correcta que se le enseña al modelo mientras aprende. Aquí sale de una columna de códigos numéricos. El cuaderno decide que del 1 al 7 significa «leve» y que el 14 significa «grave». Todo el modelo cuelga de esa decisión. Si la etiqueta está cambiada, las cuentas siguen saliendo, los gráficos siguen dibujándose y el porcentaje de acierto sigue apareciendo, solo que describen lo contrario de lo que dicen describir.
 
-La **importancia de una variable** mide cuánto pesa ese dato en las decisiones del modelo. Se reparte entre todas las variables hasta sumar el cien por cien. Es la respuesta a la pregunta de qué mira el programa antes de decidir.
+La **importancia de una variable** mide cuánto pesa ese dato en las decisiones del modelo, repartida entre todas las variables hasta sumar el cien por cien. Es la respuesta a la pregunta de qué mira el programa antes de decidir.
 
 ### Cómo funciona por dentro
 
@@ -63,7 +63,7 @@ Son cuatro eslabones sin una sola comprobación entre ellos. Nada pregunta si el
 
 ### Qué está medido
 
-Ninguna de estas cifras viene de la documentación del proyecto. Todas salen de ejecutar el código el 22/07/2026.
+Ninguna de estas cifras viene de la documentación del proyecto: todas salen de ejecutar el código el 22/07/2026.
 
 | Comprobación | Resultado |
 |---|---|
@@ -87,32 +87,32 @@ afirmaciones retiradas, porque el registro del fallo es lo que este repositorio 
 | Hora más floja | las 04:00, con 90 |
 | Columna de gravedad en `involved_parties.csv` | rellena en 15.718 de 28.773, igual que el Excel |
 
-De la franja horaria queda además esto, medido sobre el recuento corregido: entre las 18:00 y las 20:00 se acumulan 2.526 accidentes, frente a 1.645 entre las 08:00 y las 10:00, y la franja de 13:00 a 15:00 va casi a la par de la tarde con 2.469.
+De la franja horaria queda además esto, medido sobre el recuento corregido. Entre las 18:00 y las 20:00 se acumulan 2.526 accidentes, frente a 1.645 entre las 08:00 y las 10:00. La franja de 13:00 a 15:00 va casi a la par de la tarde con 2.469.
 
 ### Tres hallazgos en orden de gravedad creciente
 
-**El arreglo no llegó a los datos, y tardó cinco días más en llegar.** El cargador quedó corregido el 21/07 y funcionaba: ejecutado sobre el Excel devolvía los 12.634 buenos. Nadie volvió a lanzarlo. La base de datos siguió con la carga vieja **y con la nueva encima**, porque el cargador no vaciaba las tablas antes de escribir: 41.407 accidentes, que son los 28.773 equivocados más los 12.634 correctos, y 57.546 personas implicadas, el doble exacto de las 28.773 que trae el Excel. De ahí salieron los CSV publicados. Durante cinco días esta página anunció 12.634 accidentes mientras el fichero de al lado tenía 41.407.
+**El arreglo no llegó a los datos.** Tardó cinco días más en llegar. El cargador quedó corregido el 21/07 y funcionaba. Ejecutado sobre el Excel devolvía los 12.634 buenos. Nadie volvió a lanzarlo. La base de datos siguió con la carga vieja **y con la nueva encima**, porque el cargador no vaciaba las tablas antes de escribir: 41.407 accidentes, que son los 28.773 equivocados más los 12.634 correctos. Y 57.546 personas implicadas, el doble exacto de las 28.773 que trae el Excel. De ahí salieron los CSV publicados. Durante cinco días esta página anunció 12.634 accidentes mientras el fichero de al lado tenía 41.407.
 
 > **Cerrado el 26/07/2026.** El cargador vacía ahora las tablas antes de escribir, la base se recargó y los CSV se reexportaron. Hoy `accidents.csv` tiene 12.634 filas y `involved_parties.csv` 28.773.
 
-**Los CSV publicados perdieron la columna que sostiene el proyecto.** El Excel trae la gravedad rellena en 15.718 de sus 28.773 líneas, y en el fichero publicado esa casilla estaba vacía las 28.773 veces. Sin ella el análisis de gravedad salía en blanco, un gráfico del cuaderno se detenía con un error y el modelo se quedaba sin casos con los que aprender. Quedaba un repositorio que publicaba su acierto en portada mientras publicaba unos datos con los que ese modelo no se podía entrenar.
+**Los CSV publicados perdieron la columna que sostiene el proyecto.** El Excel trae la gravedad rellena en 15.718 de sus 28.773 líneas; en el fichero publicado esa casilla estaba vacía las 28.773 veces. Sin ella el análisis de gravedad salía en blanco, un gráfico del cuaderno se detenía con un error y el modelo se quedaba sin casos con los que aprender. Quedaba un repositorio que publicaba su acierto en portada mientras publicaba unos datos con los que ese modelo no se podía entrenar.
 
-> **Cerrado el 26/07/2026** por la misma recarga: la columna vuelve a estar rellena en 15.718 de 28.773, que es exactamente lo que trae el Excel. No hizo falta tocar nada del análisis; el dato llevaba dos meses perdiéndose en la carga.
+> **Cerrado el 26/07/2026** por la misma recarga. La columna vuelve a estar rellena en 15.718 de 28.773, que es exactamente lo que trae el Excel. No hizo falta tocar nada del análisis; el dato llevaba dos meses perdiéndose en la carga.
 
-**La etiqueta parece estar del revés.** Rehecho el modelo desde el Excel original sale un 71,6 % de acierto, muy cerca del 72 % que anunciaba la portada, de modo que la magnitud se sostiene. Lo que no se sostiene es a qué llama «grave». Entre los ocupantes de camión rígido lo son el 81,9 %, entre los peatones el 9,8 % y entre las motos pequeñas el 10,0 %. De 958 peatones atropellados, solo 94 llevan el código 14 que el cuaderno traduce por «grave». ¿Es creíble que un peatón atropellado salga mejor parado que quien viajaba dentro de un camión? Quien no necesitó asistencia sanitaria lleva con toda probabilidad ese 14 que el cuaderno lee como el peor de todos.
+**La etiqueta parece estar del revés.** Rehecho el modelo desde el Excel original sale un 71,6 % de acierto. Está muy cerca del 72 % que anunciaba la portada, así que la magnitud se sostiene. Lo que no se sostiene es a qué llama «grave». Entre los ocupantes de camión rígido lo son el 81,9 %, entre los peatones el 9,8 % y entre las motos pequeñas el 10,0 %. De 958 peatones atropellados, solo 94 llevan el código 14 que el cuaderno traduce por «grave». ¿Es creíble que un peatón atropellado salga mejor parado que quien viajaba dentro de un camión? Quien no necesitó asistencia sanitaria lleva con toda probabilidad ese 14. El cuaderno lo lee como el peor de todos.
 
 ### Afirmaciones que este README ha retirado
 
 Las cifras y conclusiones de abajo estuvieron publicadas aquí y hoy no se sostienen. Van con el motivo de la retirada al lado.
 
-- **«Accuracy del 72 %, recall del 75 % en graves, F1 de 0,72».** El 72 % se sostiene como magnitud, porque el modelo rehecho por una vía independiente da 71,6 %. Lo que ese porcentaje mide está en duda mientras la etiqueta no se aclare, así que se presenta como lo que es. El recall y el F1 no se han vuelto a medir y cuelgan de esa misma etiqueta, por lo que salen de la portada.
-- **«Las variables más importantes son la edad, la hora, el tipo de accidente, el distrito, la meteorología y el tipo de vehículo, por ese orden».** Refutado por el propio cuaderno, que ya había impreso lo contrario, y confirmado al medirlo de nuevo: tipo de vehículo 25,2 %, hora 21,2 %, distrito 21,1 %, edad 17,6 %. La portada ponía primera la variable que va cuarta y última la que va primera.
-- **«Factores de riesgo: los atropellos y las motocicletas correlacionan con mayor gravedad».** Refutado por los datos del propio repositorio, donde peatones y motos pequeñas son justamente los dos grupos con menos casos marcados como graves.
-- **«Los conductores menores de 25 y mayores de 55 son más vulnerables».** Sin medición que lo respalde y apoyado en la etiqueta que está en duda.
-- **«La gravedad se mantiene estable, la mitad leve y la mitad grave, durante las 24 horas».** Se apoya en la misma etiqueta y en una columna que los CSV publicados no traen. Lo que sí queda medido es la calidad del dato: el Excel trae la gravedad anotada en 15.718 de sus 28.773 líneas, así que cerca de la mitad de los registros del Ayuntamiento vienen sin ella.
-- **«Cuadro de mando en Power BI (entregable)».** El fichero `accident_dashboard.pbix` pesa un megabyte y por dentro tiene una página en blanco, sin un solo gráfico.
+- **«Accuracy del 72 %, recall del 75 % en graves, F1 de 0,72».** El 72 % se sostiene como magnitud, porque el modelo rehecho por una vía independiente da 71,6 %. Lo que ese porcentaje mide está en duda mientras la etiqueta no se aclare. Se presenta como lo que es. El recall y el F1 no se han vuelto a medir y cuelgan de esa misma etiqueta. Salen de la portada.
+- **«Las variables más importantes son la edad, la hora, el tipo de accidente, el distrito, la meteorología y el tipo de vehículo, por ese orden».** Refutado por el propio cuaderno, que ya había impreso lo contrario. Confirmado al medirlo de nuevo: tipo de vehículo 25,2 %, hora 21,2 %, distrito 21,1 %, edad 17,6 %. La portada ponía primera la variable que va cuarta y última la que va primera.
+- **«Factores de riesgo: los atropellos y las motocicletas correlacionan con mayor gravedad».** Refutado por los datos del propio repositorio. Peatones y motos pequeñas son justamente los dos grupos con menos casos marcados como graves.
+- **«Los conductores menores de 25 y mayores de 55 son más vulnerables».** Sin medición que lo respalde. Se apoya además en la etiqueta que está en duda.
+- **«La gravedad se mantiene estable, la mitad leve y la mitad grave, durante las 24 horas».** Se apoya en la misma etiqueta y en una columna que los CSV publicados no traen. Lo que sí queda medido es la calidad del dato: el Excel trae la gravedad anotada en 15.718 de sus 28.773 líneas. Cerca de la mitad de los registros del Ayuntamiento vienen sin ella.
+- **«Cuadro de mando en Power BI (entregable)».** El fichero `accident_dashboard.pbix` pesa un megabyte. Por dentro tiene una página en blanco, sin un solo gráfico.
 - **La sección de impacto de negocio**, que ofrecía priorización de recursos, planificación urbana y despacho de emergencias informado. Nada de eso se puede apoyar hoy en este repositorio.
-- **La lista de próximas mejoras**, que proponía una web con Streamlit, una API REST, un modelo multiclase y análisis de series temporales. Añadir funciones encima de una base que no se reproduce a sí misma no arregla nada, así que la sustituye la lista de arreglos pendientes.
+- **La lista de próximas mejoras**, que proponía una web con Streamlit, una API REST, un modelo multiclase y análisis de series temporales. Añadir funciones encima de una base que no se reproduce a sí misma no arregla nada. La sustituye la lista de arreglos pendientes.
 
 ### Qué haría falta para que sirviera
 
@@ -191,14 +191,14 @@ python scripts/load_data.py    # recarga la base de datos con el cargador correg
 python scripts/export_data.py  # vuelve a exportar los CSV
 ```
 
-La línea del esquema **faltaba hasta el 26/07/2026**, y sin ella estos pasos no funcionaban fuera
-del portátil donde nació el proyecto: `load_data.py` solo hace `USE accident_db` y da por hecho que
-las tablas ya están. Quien clonara el repositorio y siguiera las instrucciones al pie de la letra
+La línea del esquema **faltaba hasta el 26/07/2026**. Sin ella estos pasos no funcionaban fuera del
+portátil donde nació el proyecto. `load_data.py` solo hace `USE accident_db` y da por hecho que las
+tablas ya están. Quien clonara el repositorio y siguiera las instrucciones al pie de la letra
 fallaba en la primera consulta.
 
 `load_data.py` vacía las tablas antes de cargar, que es lo que significa «recarga». Hasta esa misma
-fecha no lo hacía, y ejecutarlo dos veces duplicaba las personas implicadas: los accidentes chocaban
-con su clave primaria y se descartaban, pero `involved_parties` no tiene clave única y sus filas
+fecha no lo hacía, y ejecutarlo dos veces duplicaba las personas implicadas. Los accidentes chocaban
+con su clave primaria y se descartaban. Pero `involved_parties` no tiene clave única y sus filas
 entraban otra vez. Así se publicaron unos CSV con 41.407 accidentes y 57.546 personas mientras esta
 misma página anunciaba 12.634 y 28.773.
 
@@ -206,15 +206,15 @@ El orden importa. Ejecutar `export_data.py` sin recargar antes la base de datos 
 
 ### Qué llevarse
 
-**Un número que sale bien no está comprobado.** 28.773 es una cifra redonda y del tamaño que uno espera en una ciudad grande, y estuvo publicada dos meses porque nada la contrastó contra una segunda cuenta hecha por otro camino.
+**Un número que sale bien no está comprobado.** 28.773 es una cifra redonda y del tamaño que uno espera en una ciudad grande. Estuvo publicada dos meses porque nada la contrastó contra una segunda cuenta hecha por otro camino.
 
-**Corregir la portada no corrige el proyecto.** Aquí se escribió una rectificación honrada, y aun así la base de datos, los CSV, el orden de las variables y los factores de riesgo siguieron equivocados debajo. Un aviso escrito avisa; solo una comprobación que se ejecute sola vuelve a mirar.
+**Corregir la portada no corrige el proyecto.** Aquí se escribió una rectificación honrada. Aun así, la base de datos, los CSV, el orden de las variables y los factores de riesgo siguieron equivocados debajo. Un aviso escrito avisa. Solo una comprobación que se ejecute sola vuelve a mirar.
 
 **La etiqueta se verifica antes que el modelo.** Un modelo con la respuesta cambiada de signo acierta igual, dibuja igual y publica igual. Lo único que cambia es hacia dónde apunta.
 
 ### Repos relacionados
 
-Este trabajo es una pieza de un portfolio de casos de analítica. Las piezas hermanas:
+Este trabajo es una pieza de un portfolio de casos de analítica. Estas son las piezas hermanas.
 
 - [lead-scoring-ml](https://github.com/jleonceo/lead-scoring-ml): predecir qué contacto comercial acaba comprando, con sus métricas recalculadas por un script de réplica.
 - [RFM-Customer-Analytics](https://github.com/jleonceo/RFM-Customer-Analytics): segmentación de clientes por recencia, frecuencia e importe.
@@ -228,35 +228,35 @@ Este trabajo es una pieza de un portfolio de casos de analítica. Las piezas her
 
 Someone asks you how many road accidents there were in Madrid during 2020. The City Council publishes a spreadsheet with almost twenty-nine thousand rows, so the answer looks like it is one click away.
 
-It is not. Every row of that spreadsheet is one person involved, so a single accident takes up as many rows as there were people inside it. A collision between two cars carrying one passenger fills three rows and is one crash, so anyone counting rows will report a figure more than double the real one.
+It is not. Every row of that spreadsheet is one person involved, so a single accident takes up as many rows as there were people inside it. A collision between two cars carrying one passenger fills three rows and is one crash. Anyone counting rows will report a figure more than double the real one.
 
-The number is not the worst part. If afternoon accidents carry more people inside them, counting people shifts the peak risk hour, and whoever allocates ambulances by time of day will place them where they are not needed.
+The number is not the worst part. If afternoon accidents carry more people inside them, counting people shifts the peak risk hour. Whoever allocates ambulances by time of day will place them where they are not needed.
 
 This project counted rows. For two months it announced 28,773 accidents and put the peak at seven in the evening. The right figures are 12,634 accidents and two in the afternoon. What is worth most here today is the record of that mistake and of everything it dragged behind it.
 
 ### The example that explains all of it
 
-A program finds each column of a spreadsheet by the name written in its first row, the **header**. The City Council's Excel writes the case-number column with two spaces, `Nº  EXPEDIENTE`, and the loader was looking for it with one.
+A program finds each column of a spreadsheet by its name. That name is written in the first row and is called the **header**. The City Council's Excel writes the case-number column with two spaces, `Nº  EXPEDIENTE`, and the loader was looking for it with one.
 
-That is where the whole damage sits. The `row.get` instruction it used to ask for that column does not complain when it fails to find what it was asked for: it returns an empty value and carries on. Every row was left without a case number, the program invented one for it, and so each person involved ended up recorded as a separate accident. That is called a **silent failure**. A program that stops with a red warning forces you to look, whereas this one lets you publish.
+That is where the whole damage sits. The `row.get` instruction it used to ask for that column does not complain when it fails to find what it was asked for: it returns an empty value and carries on. Every row was left without a case number and the program invented one for it. So each person involved ended up recorded as a separate accident. That is called a **silent failure**. A program that stops with a red warning forces you to look, whereas this one lets you publish.
 
-> **Correction, 21 July 2026.** Until that date this README claimed "28,773 accidents" and put the busiest hour at 19:00. Both were wrong, for the reason just explained. The real figures are **12,634 accidents** and **28,773 people involved**, 2.28 per accident. Counting accidents instead of people moves the busiest hour from 19:00 to **14:00**, so it was not just the number that changed: the conclusion changed with it. The loader was fixed and the figures were recomputed straight from the source spreadsheet by an independent route.
+> **Correction, 21 July 2026.** Until that date this README claimed "28,773 accidents" and put the busiest hour at 19:00. Both were wrong, for the reason just explained. The real figures are **12,634 accidents** and **28,773 people involved**, 2.28 per accident. Counting accidents instead of people moves the busiest hour from 19:00 to **14:00**. It was not just the number that changed: the conclusion changed with it. The loader was fixed and the figures were recomputed straight from the source spreadsheet by an independent route.
 >
-> **What counts as one accident:** one case number. That gives 12,634. Three case numbers (`2020S014759`, `2020S014760`, `2020S014761`) turn up on two different dates, so under the stricter key of case number plus date it would be 12,637. That is a 0.02% difference and it moves no conclusion, though it is said out loud rather than hidden.
+> **What counts as one accident:** one case number. That gives 12,634. Three case numbers (`2020S014759`, `2020S014760`, `2020S014761`) turn up on two different dates. Under the stricter key of case number plus date it would be 12,637. That is a 0.02% difference and it moves no conclusion, though it is said out loud rather than hidden.
 
 ### What the repository holds
 
-It keeps fifteen files: two programs, two notebooks, a trained model, a Power BI report and the source data. It chains three tasks that run one after another. It loads the Council spreadsheet into a database, explores it for patterns by hour and by district, and trains a program that tries to guess whether an accident came out minor or serious.
+It keeps fifteen files. Two programs, two notebooks, a trained model, a Power BI report and the source data. It chains three tasks that run one after another. It loads the Council spreadsheet into a database and explores it for patterns by hour and by district. And it trains a program that tries to guess whether an accident came out minor or serious.
 
-That first job of moving data around is called **ETL**, for extract, transform and load, meaning to carry data from where it sits to where it will be used, cleaning it on the way. Two programs do it here: `load_data.py` puts the Excel into the database and `export_data.py` empties the database into two comma-separated text files, the **CSVs**, the format any tool can read.
+That first job of moving data around is called **ETL**, for extract, transform and load. It means carrying data from where it sits to where it will be used, cleaning it on the way. Two programs do it here. `load_data.py` puts the Excel into the database and `export_data.py` empties the database into two comma-separated text files. Those files are the **CSVs**, the format any tool can read.
 
-Both analyses live in **notebooks**, documents that alternate explanatory text with chunks of program that run one at a time and leave their output underneath. Each of them has carried a warning at the top since July: the results saved inside them are the old ones.
+Both analyses live in **notebooks**, documents that alternate explanatory text with chunks of program that run one at a time and leave their output underneath. Each of them has carried a warning at the top since July. The results saved inside them are the old ones.
 
 ### The model's concepts
 
-**Training** a model means showing it thousands of cases whose answer is already known so that it works out the rule on its own. It is then given cases it never saw, and how many it gets right is counted, a percentage called **accuracy**.
+**Training** a model means showing it thousands of cases whose answer is already known, so that it works out the rule on its own. It is then given cases it never saw, and how many it gets right is counted. That percentage is called **accuracy**.
 
-The **label** is the correct answer shown to the model while it learns. Here it comes from a column of numeric codes, and the notebook decides that 1 through 7 means "leve" (minor) and that 14 means "grave" (serious). The entire model hangs off that decision. If the label is the wrong way round, the sums still add up, the charts still get drawn and the accuracy figure still appears, except that all of them describe the opposite of what they claim to describe.
+The **label** is the correct answer shown to the model while it learns. Here it comes from a column of numeric codes. The notebook decides that 1 through 7 means "leve" (minor) and that 14 means "grave" (serious). The entire model hangs off that decision. If the label is the wrong way round, the sums still add up, the charts still get drawn and the accuracy figure still appears. All of them describe the opposite of what they claim to describe.
 
 **Feature importance** measures how much weight each piece of data carries in the model's decisions, shared across all the variables until it adds up to a hundred per cent. It answers the question of what the program looks at before deciding.
 
@@ -268,10 +268,10 @@ One row of the original spreadsheet looks like this:
 2020S000001  01/01/2020  01:15  SAN BLAS-CANILLEJAS  Conductor  Turismo  14
 ```
 
-1. **It is loaded.** `load_data.py` reads that row, pulls out case number `2020S000001` and creates the accident the first time it sees it. The person is recorded separately, tied to that case number.
+1. **It is loaded.** `load_data.py` reads that row and pulls out case number `2020S000001`. It creates the accident the first time it sees it. The person is recorded separately, tied to that case number.
 2. **It is exported.** `export_data.py` asks the database for both tables and writes them to `accidents.csv` and `involved_parties.csv`.
 3. **It is analysed.** The first notebook counts accidents by hour and by district and draws the charts.
-4. **It is trained on.** The second joins person to accident, turns the age range into a number, translates the severity code into the label and trains the model on 80% of the cases to measure it on the remaining 20%.
+4. **It is trained on.** The second joins person to accident. It turns the age range into a number and translates the severity code into the label. It trains the model on 80% of the cases to measure it on the remaining 20%.
 
 These are four links with not one check between them. Nothing asks whether the accident count coming out of step 1 resembles what was expected, an absence that is exactly what let the header bug through.
 
@@ -293,26 +293,26 @@ None of these figures comes from the project's documentation: all of them come f
 | The model rebuilt from the Excel by an independent route | 71.6% accuracy |
 | The `accident_dashboard.pbix` report | one page, zero charts |
 
-On the daily pattern, measured over the corrected count: 2,526 accidents fall between 18:00 and 20:00, against 1,645 between 08:00 and 10:00, and the 13:00 to 15:00 stretch runs almost level with the evening at 2,469.
+On the daily pattern, measured over the corrected count: 2,526 accidents fall between 18:00 and 20:00, against 1,645 between 08:00 and 10:00. The 13:00 to 15:00 stretch runs almost level with the evening at 2,469.
 
 ### Three findings in rising order of seriousness
 
-**The fix never reached the data.** The loader is corrected and works: run today against the Excel it returns the right 12,634. Nobody launched it again, so the database still holds the old load in full. And because the reproduction instructions told you to run `export_data.py`, anyone following them today overwrites the CSVs with the bad load and sees the 19:00 peak all over again.
+**The fix never reached the data.** The loader is corrected and works. Run today against the Excel it returns the right 12,634. Nobody launched it again, so the database still holds the old load in full. And because the reproduction instructions told you to run `export_data.py`, anyone following them today overwrites the CSVs with the bad load. They see the 19:00 peak all over again.
 
-**The published CSVs lost the column the project rests on.** The Excel carries severity filled in on 15,718 of its 28,773 rows. In the published file that cell is empty all 28,773 times. Without it the severity analysis comes out blank, one notebook chart stops with an error and the model is left with no cases to learn from. What remains is a repository publishing its accuracy on the front page while publishing data that model cannot be trained on.
+**The published CSVs lost the column the project rests on.** The Excel carries severity filled in on 15,718 of its 28,773 rows. In the published file that cell is empty all 28,773 times. Without it the severity analysis comes out blank and one notebook chart stops with an error. The model is left with no cases to learn from. What remains is a repository publishing its accuracy on the front page while publishing data that model cannot be trained on.
 
-**The label looks reversed.** Rebuilt from the original Excel, the model gives 71.6% accuracy, very close to the 72% the front page announced, so the magnitude holds up. What does not hold up is what it calls "grave". Among rigid-truck occupants 81.9% are labelled serious, among pedestrians 9.8%, and among small motorcycles 10.0%. Of 958 pedestrians struck, only 94 carry the code 14 that the notebook reads as serious. Is it believable that a pedestrian hit by a vehicle comes off better than someone travelling inside a truck? Whoever needed no medical assistance almost certainly carries that 14 which the notebook reads as the worst outcome of all.
+**The label looks reversed.** Rebuilt from the original Excel, the model gives 71.6% accuracy. That is very close to the 72% the front page announced, so the magnitude holds up. What does not hold up is what it calls "grave". Among rigid-truck occupants 81.9% are labelled serious, among pedestrians 9.8%, and among small motorcycles 10.0%. Of 958 pedestrians struck, only 94 carry the code 14 that the notebook reads as serious. Is it believable that a pedestrian hit by a vehicle comes off better than someone travelling inside a truck? Whoever needed no medical assistance almost certainly carries that 14. The notebook reads it as the worst outcome of all.
 
 ### Claims this README has withdrawn
 
 The figures and conclusions below were published here and no longer hold. Each comes with the reason for its withdrawal.
 
-- **"72% accuracy, 75% recall on serious cases, F1 of 0.72".** The 72% holds as a magnitude, since the model rebuilt by an independent route gives 71.6%. What that percentage measures is in doubt while the label remains unresolved, so it is presented for what it is. The recall and the F1 have not been measured again and hang off that same label, so they come off the front page.
-- **"The most important variables are age, hour, accident type, district, weather and vehicle type, in that order".** Refuted by the project's own notebook, which had already printed the opposite, and confirmed on remeasuring: vehicle type 25.2%, hour 21.2%, district 21.1%, age 17.6%. The front page put first the variable that ranks fourth and last the one that ranks first.
-- **"Risk factors: pedestrian strikes and motorcycles correlate with higher severity".** Refuted by the repository's own data, where pedestrians and small motorcycles are precisely the two groups with the fewest cases marked serious.
+- **"72% accuracy, 75% recall on serious cases, F1 of 0.72".** The 72% holds as a magnitude, since the model rebuilt by an independent route gives 71.6%. What that percentage measures is in doubt while the label remains unresolved. It is presented for what it is. The recall and the F1 have not been measured again and hang off that same label. They come off the front page.
+- **"The most important variables are age, hour, accident type, district, weather and vehicle type, in that order".** Refuted by the project's own notebook, which had already printed the opposite. Confirmed on remeasuring: vehicle type 25.2%, hour 21.2%, district 21.1%, age 17.6%. The front page put first the variable that ranks fourth and last the one that ranks first.
+- **"Risk factors: pedestrian strikes and motorcycles correlate with higher severity".** Refuted by the repository's own data. Pedestrians and small motorcycles are precisely the two groups with the fewest cases marked serious.
 - **"Drivers under 25 and over 55 are more vulnerable".** No measurement backs it and it leans on the label that is in doubt.
 - **"Severity holds steady at roughly half minor and half serious around the clock".** It leans on the same label and on a column the published CSVs do not carry. What is measured is the data quality: the Excel has severity recorded on 15,718 of its 28,773 rows, so close to half the Council's records arrive without it.
-- **"Power BI dashboard (deliverable)".** The `accident_dashboard.pbix` file weighs one megabyte and holds a single blank page inside, without one chart.
+- **"Power BI dashboard (deliverable)".** The `accident_dashboard.pbix` file weighs one megabyte. It holds a single blank page inside, without one chart.
 - **The business impact section**, which offered resource prioritisation, urban planning and better-informed emergency dispatch. None of that can rest on this repository today.
 - **The roadmap**, which proposed a Streamlit web app, a REST API, a multiclass model and time-series analysis. Stacking features on a base that cannot reproduce itself fixes nothing, so the list of pending repairs replaces it.
 
@@ -398,13 +398,13 @@ The order matters. Running `export_data.py` without reloading the database first
 
 **A number that looks right has not been checked.** 28,773 is a round figure of the size you would expect in a large city, published for two months because nothing tested it against a second count made by another route.
 
-**Correcting the front page does not correct the project.** An honest retraction was written here, and even so the database, the CSVs, the variable ranking and the risk factors stayed wrong underneath. A written warning warns; only a check that runs by itself looks again.
+**Correcting the front page does not correct the project.** An honest retraction was written here. Even so, the database, the CSVs, the variable ranking and the risk factors stayed wrong underneath. A written warning warns. Only a check that runs by itself looks again.
 
 **The label is verified before the model is.** A model with its answer flipped scores the same, plots the same and publishes the same. The only thing that changes is where it points.
 
 ### Related repositories
 
-This work is one piece of an analytics portfolio whose sibling projects are these:
+This work is one piece of an analytics portfolio. These are the sibling projects.
 
 - [lead-scoring-ml](https://github.com/jleonceo/lead-scoring-ml): predicting which sales contact ends up buying, with its metrics recomputed by a replication script.
 - [RFM-Customer-Analytics](https://github.com/jleonceo/RFM-Customer-Analytics): customer segmentation by recency, frequency and monetary value.
