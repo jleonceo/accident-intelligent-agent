@@ -42,3 +42,5 @@ Thumbs.db
 # Datos sensibles
 *.pem
 *.key
+# Modelo entrenado: lo genera notebooks/02_modelo_predictivo_gravedad.ipynb
+models/*.pkl
