@@ -1,6 +1,6 @@
 Versión en español: [README.md](README.md)
 
-# Road accidents in Madrid, 2020 · ETL, analysis and model
+# Road accidents in Madrid in 2020
 
 It takes Madrid City Council's open road-accident data from a spreadsheet into a database, analyses it by hour and
 district, and trains a model that estimates whether a person involved will need medical assistance.

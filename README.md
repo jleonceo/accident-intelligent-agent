@@ -1,6 +1,6 @@
 English version: [README.en.md](README.en.md)
 
-# Accidentes de tráfico en Madrid, 2020 · ETL, análisis y modelo
+# Accidentes de tráfico en Madrid en 2020
 
 Lleva los datos abiertos de accidentalidad del Ayuntamiento de Madrid de una hoja de cálculo a una base de datos,
 los analiza por hora y distrito, y entrena un modelo que estima si una persona implicada necesitará asistencia
