@@ -26,14 +26,17 @@ agrupa por número de expediente, que es lo que identifica un accidente, y salen
 ## Qué hay dentro
 
 ```mermaid
-flowchart TD
-    X[Excel del Ayuntamiento<br/>accidentes de 2020] --> L[load_data.py<br/>carga en MySQL]
-    L --> A[Tabla de accidentes]
-    L --> P[Tabla de personas]
+flowchart LR
+    subgraph S1[Carga]
+        direction TB
+        X[Excel del Ayuntamiento<br/>accidentes de 2020] --> L[load_data.py<br/>carga en MySQL]
+    end
+    S1 --> A[Tabla de<br/>accidentes]
+    S1 --> P[Tabla de<br/>personas]
     A & P --> E[export_data.py<br/>CSV procesados]
     E --> N1[Análisis exploratorio<br/>por hora y distrito]
-    E --> N2[Bosque aleatorio<br/>¿necesitará asistencia sanitaria?]
-    N2 --> R[71 % de aciertos<br/>frente a 53 % de la clase mayoritaria]
+    E --> N2[Bosque aleatorio<br/>¿necesitará asistencia<br/>sanitaria?]
+    N2 --> R[71 % de aciertos<br/>frente a 53 % de la<br/>clase mayoritaria]
     style R fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
 ```
 

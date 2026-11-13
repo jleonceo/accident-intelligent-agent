@@ -25,14 +25,17 @@ loader groups by case number, which is what identifies an accident, and the coun
 ## What is inside
 
 ```mermaid
-flowchart TD
-    X[City Council spreadsheet<br/>2020 accidents] --> L[load_data.py<br/>loads into MySQL]
-    L --> A[Accidents table]
-    L --> P[People table]
+flowchart LR
+    subgraph S1[Load]
+        direction TB
+        X[City Council spreadsheet<br/>2020 accidents] --> L[load_data.py<br/>loads into MySQL]
+    end
+    S1 --> A[Accidents<br/>table]
+    S1 --> P[People<br/>table]
     A & P --> E[export_data.py<br/>processed CSV files]
     E --> N1[Exploratory analysis<br/>by hour and district]
-    E --> N2[Random forest<br/>will they need medical care?]
-    N2 --> R[71 % right<br/>against 53 % for the majority class]
+    E --> N2[Random forest<br/>will they need<br/>medical care?]
+    N2 --> R[71 % right<br/>against 53 % for the<br/>majority class]
     style R fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
 ```
 
