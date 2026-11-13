@@ -25,6 +25,19 @@ agrupa por número de expediente, que es lo que identifica un accidente, y salen
 
 ## Qué hay dentro
 
+```mermaid
+flowchart TD
+    X[Excel del Ayuntamiento<br/>accidentes de 2020] --> L[load_data.py<br/>carga en MySQL]
+    L --> A[Tabla de accidentes]
+    L --> P[Tabla de personas]
+    A & P --> E[export_data.py<br/>CSV procesados]
+    E --> N1[Análisis exploratorio<br/>por hora y distrito]
+    E --> N2[Bosque aleatorio<br/>¿necesitará asistencia sanitaria?]
+    N2 --> R[71 % de aciertos<br/>frente a 53 % de la clase mayoritaria]
+    style R fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+```
+
+
 1. `scripts/load_data.py` carga el Excel en MySQL, con un accidente por expediente y las personas aparte.
 2. `scripts/export_data.py` exporta las dos tablas a `data/processed/`.
 3. `notebooks/01_eda_exploratorio.ipynb` analiza los accidentes por hora y distrito y la lesividad de las personas.

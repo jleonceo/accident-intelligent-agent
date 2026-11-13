@@ -24,6 +24,19 @@ loader groups by case number, which is what identifies an accident, and the coun
 
 ## What is inside
 
+```mermaid
+flowchart TD
+    X[City Council spreadsheet<br/>2020 accidents] --> L[load_data.py<br/>loads into MySQL]
+    L --> A[Accidents table]
+    L --> P[People table]
+    A & P --> E[export_data.py<br/>processed CSV files]
+    E --> N1[Exploratory analysis<br/>by hour and district]
+    E --> N2[Random forest<br/>will they need medical care?]
+    N2 --> R[71 % right<br/>against 53 % for the majority class]
+    style R fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+```
+
+
 1. `scripts/load_data.py` loads the Excel file into MySQL, one accident per case number and the people apart.
 2. `scripts/export_data.py` exports both tables to `data/processed/`.
 3. `notebooks/01_eda_exploratorio.ipynb` analyses accidents by hour and district and the injury outcome of each
